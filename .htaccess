@@ -1,0 +1,15 @@
+# Habilitar el motor de reescritura
+RewriteEngine On
+
+# Establecer la carpeta public como la única accesible
+RewriteCond %{REQUEST_URI} !^/public/
+
+# Redirigir todo lo que no sea archivo o directorio existente a public/index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ public/router.php [L]
+
+# Desactivar el listado de directorios
+Options -Indexes
+
+php_value display_errors 1
