@@ -9,6 +9,7 @@ CREATE TABLE admins (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    num_control VARCHAR(255) NOT NULL,
     photo VARCHAR(255) DEFAULT './media/img/default.jpg',
     billboard_privileges BOOLEAN NOT NULL,
     events_privileges BOOLEAN NOT NULL,

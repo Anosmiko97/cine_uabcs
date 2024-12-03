@@ -1,0 +1,29 @@
+body {
+    background-color: #DBDBDB;
+}
+
+:root {
+    --blue: #2D6FA4;
+}
+
+.login-input {
+    background-color: #D9D9D9;
+}
+
+.blue-btn {
+    background-color: var(--blue);
+    color: white;
+}
+
+.blue-btn:hover {
+    background-color: #004781;
+    color: rgb(164, 164, 164);
+}
+
+.login-container {
+    width: 400px;
+}
+
+.login-container div i {
+    font-size: 6rem;
+}
