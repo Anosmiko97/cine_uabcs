@@ -4,33 +4,34 @@ require_once "./src/config/database.php";
 $error = null;
 $conn = Db::getPDO();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Debe ser 'POST' en mayúsculas
-    $num_control = $_POST['num_control'] ?? null; // Capturamos los valores de los campos
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
+    $num_control = trim($_POST['num_control'] ?? null); 
     $password = $_POST['password'] ?? null;
 
     if ($num_control && $password) {
-        $stmt = $conn->prepare("SELECT * FROM admins WHERE num_control = $num_control AND password = $password");
-        $stmt->execute([
-            ':num_control' => $num_control,
-            ':password' => $password // Asegúrate de usar contraseñas cifradas
-        ]);
+        try {
+            $stmt = $conn->prepare("SELECT * FROM admins WHERE num_control = :num_control");
+            $stmt->execute([':num_control' => $num_control]);
+            $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($admin) {
-            session_start();
-            $_SESSION['admin'] = $admin['name'];
-            $_SESSION['privileges'] = $admin['privileges'];
-            header("Location: /admin/panel");
-            exit;
-        } else {
-            $error = "Número de control o contraseña incorrectos.";
+            if ($admin && password_verify($password, $admin['password'])) {
+                session_start();
+                $_SESSION['admin'] = $admin['name'];
+                $_SESSION['privileges'] = $admin['privileges'];
+                header("Location: /admin/panel");
+                exit;
+            } else {
+                $error = "Credenciales incorrectas.";
+            }
+        } catch (PDOException $e) {
+            $error = "Error de base de datos: " . $e->getMessage();
         }
     } else {
         $error = "Todos los campos son obligatorios.";
     }
 }
 ?>
+
 
 <html lang="es">
 <head>

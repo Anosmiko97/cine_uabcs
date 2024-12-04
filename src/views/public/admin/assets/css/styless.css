@@ -27,3 +27,24 @@ body {
 .login-container div i {
     font-size: 6rem;
 }
+
+.uabcs-logo {
+    width: 6rem;
+}
+
+.panel-option {
+    max-width: 400px;
+    transition: .5s ease-in-out scale;
+}
+
+.panel-option i {
+    font-size: 6rem;
+}
+
+.panel-option:hover {
+    scale: 1.05;
+}
+
+.container-img img {
+    width: 10rem;
+}
