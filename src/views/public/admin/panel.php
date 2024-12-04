@@ -6,7 +6,7 @@ Session::checkSession();
 
 $id = $_SESSION['admin']['id'];
 $name = $_SESSION['admin']['name'];
-//$num_control = $_SESSION['admin']['num_control'];
+$num_control = $_SESSION['admin']['num_control'];
 $email =  $_SESSION['admin']['email'];
 $photo = $_SESSION['admin']['photo'];
 ?>
@@ -52,10 +52,11 @@ $photo = $_SESSION['admin']['photo'];
                             </div>
                             <div class="modal-body d-flex justify-content-center gap-4">
                                 <div class="container-img">
-                                    <img src="<?= explode('htdocs', $photo) ?>" class="rounded" alt="Foto del Administrador">
+                                    <img src="<?= $photo ?>" class="rounded" alt="Foto del Administrador">
                                 </div>
                                 <div>
-            
+                                    <input type="hidden" class="form-control" name="id" value="<?= htmlspecialchars($id) ?>" required>
+
                                     <!-- Nombre -->
                                     <div class="mb-3">
                                         <label class="form-label">Nombre</label>

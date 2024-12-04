@@ -61,7 +61,7 @@ switch($request){
 
     // Rutas para gestionar perfil de administrador
     case '/admin/configurar_perfil':
-        require_once __DIR__.'/../src/views/public/admin/users/configure.php';
+        require_once __DIR__.'/../src/controllers/admin/configure.php';
         break;
 
     // Rutas para session

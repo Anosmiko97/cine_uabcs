@@ -21,10 +21,6 @@ try {
         $num_control = trim($_POST['num_control']);
         $email = trim($_POST['email']);
         $password = $_POST['password']; 
-        $billboard_privileges = isset($_POST['billboard_privileges']) ? 1 : 0;
-        $events_privileges = isset($_POST['events_privileges']) ? 1 : 0;
-        $system_privileges = isset($_POST['system_privileges']) ? 1 : 0;
-        $register_privileges = isset($_POST['register_privileges']) ? 1 : 0;
         $photo = $_FILES['photo'] ?? null;
 
         // Validar campos vacíos
@@ -89,12 +85,11 @@ try {
 
 } catch (PDOException $e) {
     $_SESSION['error'] = "Error al conectarse con la base de datos.";
-    header('Location: /admin/usuarios');
+    header('Location: /admin/panel');
     exit;
 } catch (Exception $e) {
     $_SESSION['error'] = $e->getMessage();
-    header('Location: /admin/usuarios');
+    header('Location: /admin/panel');
     exit;
 }
 ?>
-
