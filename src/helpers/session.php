@@ -2,7 +2,7 @@
 
 class Session {
 
-    public static function checkSession($requiredRole = null) {
+    public static function checkSession() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -11,12 +11,15 @@ class Session {
             header("Location: /");
             exit;
         }
+    }
 
-        if ($requiredRole && $_SESSION['privileges'] !== $requiredRole) {
-            header("Location: /");
+    public static function checkPrivilege($privilege) {
+        self::checkSession();
+
+        if (empty($_SESSION['admin']['privileges'][$privilege])) {
+            // Redirigir al panel si no tiene el privilegio necesario
+            header("Location: /admin/panel");
             exit;
         }
-
-        return true;
     }
 }

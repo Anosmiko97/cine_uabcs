@@ -1,4 +1,8 @@
 <?php
+    require_once "/xampp/htdocs/src/helpers/session.php";
+
+    Session::checkPrivilege('system_privileges');
+
     require_once "/xampp/htdocs/src/config/database.php";
     $conn = Db::getPDO();
     $error =  null;

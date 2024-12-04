@@ -19,15 +19,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([':num_control' => $num_control]);
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            // Verificar si el usuario existe y si la contraseña es válida
             if ($admin && password_verify($password, $admin['password'])) {
                 if (session_status() === PHP_SESSION_NONE) {
                     session_start();
                 }
+
                 // Regenerar el ID de la sesión para mayor seguridad
                 session_regenerate_id(true);
 
-                $_SESSION['admin'] = $admin['name'];
-                $_SESSION['privileges'] = $admin['privileges'];
+                // Guardar los datos del usuario en la sesión
+                $_SESSION['admin'] = [
+                    'id' => $admin['id'],
+                    'name' => $admin['name'],
+                    'email' => $admin['email'],
+                    'photo' => $admin['photo'],
+                    'privileges' => [
+                        'billboard' => (bool)$admin['billboard_privileges'],
+                        'events' => (bool)$admin['events_privileges'],
+                        'system' => (bool)$admin['system_privileges'],
+                        'register' => (bool)$admin['register_privileges']
+                    ]
+                ];
+
+                // Redirigir al panel de administración
                 header("Location: /admin/panel");
                 exit;
             } else {
