@@ -4,7 +4,6 @@ require_once "/xampp/htdocs/src/config/database.php";
 $conn = Db::getPDO();
 
 try {
-    // Obtener ID del administrador
     $id = $_REQUEST['id'];
 
     // Obtener los datos actuales del administrador para rellenar el formulario
@@ -83,19 +82,16 @@ try {
             ':id' => $id
         ]);
 
-        session_start();
         $_SESSION['message'] = 'Administrador actualizado con éxito.';
         header('Location: /admin/usuarios');
         exit;
     }
 
 } catch (PDOException $e) {
-    session_start();
     $_SESSION['error'] = "Error al conectarse con la base de datos.";
     header('Location: /admin/usuarios');
     exit;
 } catch (Exception $e) {
-    session_start();
     $_SESSION['error'] = $e->getMessage();
     header('Location: /admin/usuarios');
     exit;

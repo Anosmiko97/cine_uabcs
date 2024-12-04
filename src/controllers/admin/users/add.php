@@ -64,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':register_privileges' => $register_privileges,
         ]);
 
-        session_start();
         $_SESSION['message'] = "Administrador registrado con éxito.";
         header('Location: /admin/usuarios');
         exit;

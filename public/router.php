@@ -59,12 +59,19 @@ switch($request){
         require_once __DIR__.'/../src/controllers/admin/users/add.php';
         break;
 
+    // Rutas para gestionar perfil de administrador
     case '/admin/configurar_perfil':
-        require_once __DIR__.'/../src/views/public/admin/panel.php';
+        require_once __DIR__.'/../src/views/public/admin/users/configure.php';
+        break;
+
+    // Rutas para session
+    case '/admin/cerrar_session':
+        require_once __DIR__.'/../src/controllers/admin/logout.php';
         break;
     case '/admin/iniciar_sesion':
         require_once __DIR__.'/../src/views/public/admin/login.php';
         break;
+
     default:
         http_response_code(404);
         //Hacer una vista de 404

@@ -1,5 +1,4 @@
 <?php
-
 class Session {
 
     public static function checkSession() {
@@ -30,5 +29,18 @@ class Session {
         }
 
         return false;
+    }
+
+    public static function logout() {
+        // Iniciar sesión si no lo está 
+        /*
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        } */
+
+        $_SESSION = [];
+        session_destroy();
+        header("Location: /");
+        exit;
     }
 }

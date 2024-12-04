@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'name' => $admin['name'],
                     'email' => $admin['email'],
                     'photo' => $admin['photo'],
+                    'num_control' => $num_control,
                     'privileges' => [
                         'billboard' => (bool)$admin['billboard_privileges'],
                         'events' => (bool)$admin['events_privileges'],

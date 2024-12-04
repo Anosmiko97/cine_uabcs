@@ -39,6 +39,14 @@
                             <a class="nav-link text-dark" href="/admin/usuarios">Usuarios</a>
                         </li>
                     <?php endif; ?>
+                    <?php if (Session::checkPrivilegeWithReturn('system')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/admin/configurar_perfil">Configurar mi perfil</a>
+                        </li>
+                    <?php endif; ?>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="/admin/cerrar_session">Cerrar session</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="/admin/panel">Panel</a>
                     </li>
