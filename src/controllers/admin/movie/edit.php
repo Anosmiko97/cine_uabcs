@@ -8,21 +8,23 @@ $imagesDir = '/xampp/htdocs/src/views/public/assets/media/movies/img/';
 try {
     // Datos de la solicitud
     $id = $_REQUEST['id'];
-    $title = $_REQUEST['title'];
-    $description = $_REQUEST['description'];
+    $title = trim($_REQUEST['title']);
+    $description = trim($_REQUEST['description']);
     $image = $_FILES['img_route'];
     $file = $_FILES['movie_route'];
 
     // Validar subida de archivos
     if ($image['error'] !== UPLOAD_ERR_OK || $file['error'] !== UPLOAD_ERR_OK) {
-        throw new Exception("Error al subir los archivos.");
+        throw new Exception("Error al subir archivo.");
     }
 
     // Validar tipos de archivo 
     $validImageTypes = ['image/jpeg', 'image/png'];
     $validVideoTypes = ['video/mp4'];
-    if (!in_array($image['type'], $validImageTypes) || !in_array($file['type'], $validVideoTypes)) {
-        throw new Exception("Tipo de archivo no permitido.");
+    if (!in_array($image['type'], $validImageTypes)) {
+        throw new Exception(message: "Formato de imagen no permitido.");
+    } elseif (!in_array($file['type'], $validVideoTypes)) {
+        throw new Exception(message: "Formato de video no permitido.");
     }
 
     // Generar rutas únicas para evitar sobrescribir archivos
@@ -44,12 +46,20 @@ try {
         ':id' => $id
     ]);
 
-    echo "Película actualizada con éxito.";
+    session_start();
+    $_SESSION['message'] = 'Película actualizada con éxito';
+    header('Location: /admin/cartelera');
+    exit;
 
 } catch (PDOException $e) {
-    error_log($e->getMessage());
-    echo $e->getMessage();
+    session_start();
+    $_SESSION['error'] = "Error al conectarse con la base de datos";
+    header('Location: /admin/cartelera');
+    exit;
 } catch (Exception $e) {
-    error_log($e->getMessage());
-    echo $e->getMessage();
+    session_start();
+    $_SESSION['error'] = 'Algo salio mal, intente de nuevo';
+    header('Location: /admin/cartelera');
+    exit;
 }
+?>

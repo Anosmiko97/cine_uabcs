@@ -4,29 +4,44 @@
     $error =  null;
     $movies = [];
     
-
     try {
         $stmt = $conn->query("SELECT * FROM movies");
         $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
-       // "/src/views/public/assets/media/movies/img/movie.jpg"
-       
-       // "<?= htmlspecialchars($movie['img_route']) ?
         
     } catch (PDOException $e) {
-            $error = 'Algo salio mal al cargar las peliculas';
+        $error = 'Algo salio mal al cargar las peliculas';
     }    
 ?>
 
 <?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php" ?>
 
     <main class="p-4">
+    <?php
+        session_start();
+        if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_SESSION['message']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php unset($_SESSION['message']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_SESSION['error']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+
         <div class="container-fluid d-flex justify-content-end mb-4">
-            <button class="btn blue-btn fw-bold">Agregar pelicula +</button>
+            <a class="btn blue-btn fw-bold" href="/admin/cartelera/agregar">Agregar pelicula +</a>
         </div>
 
         <?php if (count($movies) == 0): ?>
             <section class="container-fluid d-flex justify-content-center">
-                <h3 style="max-width: 400px;" class="text-center bg-white p-3 rounded shadow">No hay peliculas registradas <a href="">agrega una</a></h3>
+                <h3 style="max-width: 400px;" class="text-center bg-white p-3 rounded shadow">No hay peliculas registradas <a href="/admin/cartelera/agregar">agrega una</a></h3>
             </section>
         <?php else: ?>
             <section class="container d-flex flex-wrap gap-4">

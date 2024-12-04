@@ -2,44 +2,53 @@
 require_once "/xampp/htdocs/src/config/database.php";
 
 $conn = Db::getPDO();
+session_start();
 
 try {
     $id = $_REQUEST['id'];
     $movie_route = 'C:' . $_REQUEST['movie_route'];
     $img_route = 'C:' . $_REQUEST["img_route"];
-    var_dump( $img_route);
+    $message = "";
 
     // Eliminar video
     if (file_exists($movie_route)) {
-        if (unlink($movie_route) ) {
-            echo "Archivo eliminado vide o con éxito.";
+        if (unlink($movie_route)) {
+            $message = "Pelicula eliminada con éxito. ";
         } else {
-            echo "No se pudo eliminar video el archivo.";
+            $message = "No se pudo eliminar el archivo de video. ";
         }
     } else {
-        echo "El archivo video no existe.";
-    }
-    
-    // Eliminar archivos imagen
-    if (file_exists($img_route)) {
-        if (unlink($img_route)) {
-            echo "Archivo eliminado con éxito.";
-        } else {
-            echo "No se pudo eliminar el archivo.";
-        }
-    } else {
-        echo "El archivo no existe.";
+        $message = "El archivo de video no existe. ";
     }
 
-    // Consulta sql
+    // Eliminar imagen
+    if (file_exists($img_route)) {
+        if (unlink($img_route)) {
+            $message = "Pelicula eliminada con éxito. ";
+        } else {
+            $message = "No se pudo eliminar el archivo de imagen. ";
+        }
+    } else {
+        $message = "El archivo de imagen no existe. ";
+    }
+
+    // Consulta SQL para eliminar registro
     $stmt = $conn->prepare("DELETE FROM movies WHERE id = :id");
     $stmt->execute([':id' => $id]);
 
     if ($stmt->rowCount() > 0) {
-        echo "Registro eliminado con éxito.";
+        $message = "Pelicula eliminada con éxito. ";
     } else {
-        echo "No se encontró ningún registro con el ID especificado.";
-    } 
+        $message = "No se encontró ningún el registro.";
+    }
+
+    // Almacenar mensaje en sesión y redirigir
+    $_SESSION['message'] = $message;
+    header('Location: /admin/cartelera');
+    exit;
+
 } catch (PDOException $e) {
-    echo "Error al eliminar el registro: " . $e->getMessage();
+    $_SESSION['error'] = "Error al eliminar el registro ";
+    header('Location: /admin/cartelera');
+    exit;
 }
