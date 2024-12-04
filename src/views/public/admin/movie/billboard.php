@@ -19,10 +19,14 @@
 
 <?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php" ?>
 
-    <main class="p-4 mt-4">
+    <main class="p-4">
+        <div class="container-fluid d-flex justify-content-end mb-4">
+            <button class="btn blue-btn fw-bold">Agregar pelicula +</button>
+        </div>
+
         <?php if (count($movies) == 0): ?>
             <section class="container-fluid d-flex justify-content-center">
-                <h2 style="max-width: 400px;" class="text-center bg-white p-2 rounded shadow">No hay peliculas registradas</h2>
+                <h3 style="max-width: 400px;" class="text-center bg-white p-3 rounded shadow">No hay peliculas registradas <a href="">agrega una</a></h3>
             </section>
         <?php else: ?>
             <section class="container d-flex flex-wrap gap-4">

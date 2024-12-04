@@ -19,7 +19,6 @@ try {
     } else {
         echo "El archivo video no existe.";
     }
-
     
     // Eliminar archivos imagen
     if (file_exists($img_route)) {
