@@ -12,8 +12,8 @@
     <header class="bg-light py-2 shadow-sm">
         <div class="container d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="d-flex align-items-center text-decoration-none">
-                <img src="./img/uabcsLogo.png" alt="Logo" class="me-2" style="max-width: 58%">
+            <a href="/" class="d-flex align-items-center text-decoration-none">
+                <img src="/src/views/public/assets/media/movies/default/uabcsLogo.png" alt="Logo" class="me-2" style="max-width: 58%">
             </a>
 
             <nav>
