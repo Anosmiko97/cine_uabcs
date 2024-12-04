@@ -1,19 +1,23 @@
 <?php
-    require_once "./src/config/database.php";
+    require_once "/xampp/htdocs/src/config/database.php";
     $conn = Db::getPDO();
     $error =  null;
     $movies = [];
+    
 
     try {
         $stmt = $conn->query("SELECT * FROM movies");
         $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+       // "/src/views/public/assets/media/movies/img/movie.jpg"
+       
+       // "<?= htmlspecialchars($movie['img_route']) ?
         
     } catch (PDOException $e) {
             $error = 'Algo salio mal al cargar las peliculas';
     }    
 ?>
 
-<?php require_once "./src/views/public/admin/layouts/header.php" ?>
+<?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php" ?>
 
     <main class="p-4 mt-4">
         <?php if (count($movies) == 0): ?>
@@ -25,7 +29,7 @@
                 <?php foreach ($movies as $movie): ?> 
                     <div class="container panel-option text-center bg-white p-4 rounded shadow d-flex justify-content-center gap-4">
                         <div class="container-img">
-                            <img src="<?= htmlspecialchars($movie['img_route']) ?>" class="rounded" alt="">
+                            <img src="<?= explode('htdocs', $movie['img_route'])[1]?>" class="rounded" alt="">
                         </div>
                         <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
                             <h3><?= htmlspecialchars($movie['title']) ?></h3>
@@ -53,7 +57,7 @@
                                 </div>
                                 <div class="modal-body d-flex justify-content-center gap-4">
                                     <div class="container-img">
-                                        <img src="<?= htmlspecialchars($movie['img_route']) ?>" class="rounded" alt="">
+                                        <img src="<?= explode('htdocs', $movie['img_route'])[1]?>" class="rounded" alt="">
                                     </div>
                                     <div>
                                         <input type="hidden" name="id" value="<?= htmlspecialchars($movie['id']) ?>">
