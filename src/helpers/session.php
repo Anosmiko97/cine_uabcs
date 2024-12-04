@@ -17,9 +17,18 @@ class Session {
         self::checkSession();
 
         if (empty($_SESSION['admin']['privileges'][$privilege])) {
-            // Redirigir al panel si no tiene el privilegio necesario
             header("Location: /admin/panel");
             exit;
         }
+    }
+
+    public static function checkPrivilegeWithReturn($privilege) {
+        self::checkSession();
+
+        if (!empty($_SESSION['admin']['privileges'][$privilege])) {
+            return true;            
+        }
+
+        return false;
     }
 }

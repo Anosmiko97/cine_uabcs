@@ -17,23 +17,30 @@
     <header class="bg-light py-2 shadow-sm">
         <div class="container d-flex align-items-center justify-content-between p-1">
 
-            <a href="index.html" class="d-flex align-items-center text-decoration-none">
+            <a href="/admin/panel" class="d-flex align-items-center text-decoration-none">
                 <img src="/src/views/public/admin/assets/media/img/logoUABCS.png" alt="Logo" class="uabcs-logo">
+                <h4 class="text-dark">Panel de administracion</h4>
             </a>
 
             <nav>
                 <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="/"></a>
-                    </li>
-                    <li class="nav-item">
+                    <?php if (Session::checkPrivilegeWithReturn('billboard')): ?>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" href="/admin/cartelera">Cartelera</a>
-                    </li>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (Session::checkPrivilegeWithReturn('events')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/admin/eventos">Eventos</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (Session::checkPrivilegeWithReturn('system')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/admin/usuarios">Usuarios</a>
+                        </li>
+                    <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="/admin/eventos">Eventos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="/admin/usuarios">Usuarios</a>
+                        <a class="nav-link text-dark" href="/admin/panel">Panel</a>
                     </li>
                 </ul>
             </nav>
