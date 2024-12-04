@@ -26,6 +26,23 @@ switch($request){
     case '/admin/panel':
         require_once __DIR__.'/../src/views/public/admin/panel.php';
         break;
+
+    // Rutas para cartelera
+    case '/admin/cartelera':
+        require_once __DIR__.'/../src/views/public/admin/movie/billboard.php';
+        break;
+    case "/admin/cartelera/editar":
+        require_once __DIR__.'/../src/controllers/admin/movie/edit.php';
+        break;
+    case '/admin/eventos':
+        require_once __DIR__.'/../src/views/public/admin/panel.php';
+        break;
+    case '/admin/usuarios':
+        require_once __DIR__.'/../src/views/public/admin/panel.php';
+        break;
+    case '/admin/configurar_perfil':
+        require_once __DIR__.'/../src/views/public/admin/panel.php';
+        break;
     case '/admin/iniciar_sesion':
         require_once __DIR__.'/../src/views/public/admin/login.php';
         break;
@@ -33,5 +50,4 @@ switch($request){
         http_response_code(404);
         //Hacer una vista de 404
         break;
-
 }
