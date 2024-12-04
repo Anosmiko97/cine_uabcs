@@ -1,4 +1,4 @@
-<?php require_once "./src/views/public/admin/layouts/header.php" ?>
+<?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php" ?>
  
     <main class="p-4 mt-4">
         <section class="container d-flex flex-wrap gap-4">

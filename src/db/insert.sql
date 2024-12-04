@@ -40,3 +40,7 @@ VALUES
 (1, 'NC12345', '2024-12-04 15:30:00'),
 (2, 'NC67890', '2024-12-04 17:45:00'),
 (3, NULL, '2024-12-04 19:10:00');
+
+INSERT INTO admins (name, email, password, num_control, billboard_privileges, events_privileges, system_privileges, register_privileges)
+VALUES 
+('Admin', 'admin1@cineuabcs.com', 'admin1', 'm1234', 1, 1, 1, 1);

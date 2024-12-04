@@ -1,12 +1,17 @@
-<?php 
-require_once "./src/config/database.php";
+<?php
+require_once "/xampp/htdocs/src/config/database.php";
 
 $error = null;
-$conn = Db::getPDO();
+
+try {
+    $conn = Db::getPDO();
+} catch (PDOException $e) {
+    die("Error al conectar con la base de datos: " . $e->getMessage());
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
-    $num_control = trim($_POST['num_control'] ?? null); 
-    $password = $_POST['password'] ?? null;
+    $num_control = htmlspecialchars(trim($_POST['num_control'] ?? '')); 
+    $password = $_POST['password'] ?? '';
 
     if ($num_control && $password) {
         try {
@@ -15,7 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($admin && password_verify($password, $admin['password'])) {
-                session_start();
+                if (session_status() === PHP_SESSION_NONE) {
+                    session_start();
+                }
+                // Regenerar el ID de la sesión para mayor seguridad
+                session_regenerate_id(true);
+
                 $_SESSION['admin'] = $admin['name'];
                 $_SESSION['privileges'] = $admin['privileges'];
                 header("Location: /admin/panel");
@@ -24,14 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Credenciales incorrectas.";
             }
         } catch (PDOException $e) {
-            $error = "Error de base de datos: " . $e->getMessage();
+            $error = "Error de base de datos: " . htmlspecialchars($e->getMessage());
         }
     } else {
         $error = "Todos los campos son obligatorios.";
     }
 }
 ?>
-
 
 <html lang="es">
 <head>
@@ -42,11 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/src/views/public/admin/assets/css/styless.css">
 </head>
-<body class="p-5">
+<body class="p-5 bg-light">
     <div class="container login-container bg-white p-4 rounded shadow">
         <div class="text-center">
-            <i class="fa-regular fa-user pb-2"></i>
-            <p class="text-dark">Iniciar sesión como administrador</p>
+            <i class="fa-regular fa-user pb-2" style="font-size: 40px; color: #6c757d;"></i>
+            <h4 class="text-dark">Iniciar sesión como administrador</h4>
         </div>
         <form action="/admin/iniciar_sesion" method="post">
             <div class="mb-3">
@@ -55,7 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     class="form-control login-input" 
                     id="num_control" 
                     name="num_control" 
-                    placeholder="Número de control">
+                    placeholder="Número de control" 
+                    required>
             </div>
             <div class="mb-3">
                 <input 
@@ -63,13 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     class="form-control login-input" 
                     id="password" 
                     name="password" 
-                    placeholder="Contraseña">
+                    placeholder="Contraseña" 
+                    required>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn blue-btn p-3">INICIAR SESIÓN</button>
+                <button type="submit" class="btn btn-primary w-100">INICIAR SESIÓN</button>
             </div>
             <?php if ($error): ?>
-                <div class="text-danger mt-3 text-center"><?= $error; ?></div>
+                <div class="alert alert-danger mt-3 text-center"><?= htmlspecialchars($error); ?></div>
             <?php endif; ?>
         </form>
     </div>

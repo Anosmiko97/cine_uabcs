@@ -44,9 +44,21 @@ switch($request){
     case '/admin/eventos':
         require_once __DIR__.'/../src/views/public/admin/panel.php';
         break;
+
+    // Rutas de usuarios
     case '/admin/usuarios':
-        require_once __DIR__.'/../src/views/public/admin/panel.php';
+        require_once __DIR__.'/../src/views/public/admin/users/users.php';
         break;
+    case "/admin/usuarios/editar":
+        require_once __DIR__.'/../src/controllers/admin/users/edit.php';
+        break;
+    case "/admin/usuarios/eliminar":
+        require_once __DIR__.'/../src/controllers/admin/users/delete.php';
+        break;
+    case "/admin/usuarios/agregar":
+        require_once __DIR__.'/../src/controllers/admin/users/add.php';
+        break;
+
     case '/admin/configurar_perfil':
         require_once __DIR__.'/../src/views/public/admin/panel.php';
         break;

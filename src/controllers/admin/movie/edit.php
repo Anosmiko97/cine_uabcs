@@ -58,7 +58,7 @@ try {
     exit;
 } catch (Exception $e) {
     session_start();
-    $_SESSION['error'] = 'Algo salio mal, intente de nuevo';
+    $_SESSION['error'] = 'Algo salio mal, intente de nuevo:' . $e->getMessage();
     header('Location: /admin/cartelera');
     exit;
 }

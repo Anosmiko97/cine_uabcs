@@ -1,3 +1,9 @@
+<?php 
+    require_once "/xampp/htdocs/src/helpers/session.php";
+
+    Session::checkSession();
+?>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +27,7 @@
                         <a class="nav-link text-dark" href="/"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" href="/admin/cartelera">Cartelera</a>
+                            <a class="nav-link text-dark" href="/admin/cartelera">Cartelera</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" href="/admin/eventos">Eventos</a>

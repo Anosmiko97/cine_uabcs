@@ -17,7 +17,6 @@
 
     <main class="p-4">
     <?php
-        session_start();
         if (isset($_SESSION['message'])): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <?= htmlspecialchars($_SESSION['message']); ?>

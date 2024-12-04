@@ -42,7 +42,6 @@ try {
         $message = "No se encontró ningún el registro.";
     }
 
-    // Almacenar mensaje en sesión y redirigir
     $_SESSION['message'] = $message;
     header('Location: /admin/cartelera');
     exit;
@@ -52,3 +51,4 @@ try {
     header('Location: /admin/cartelera');
     exit;
 }
+
