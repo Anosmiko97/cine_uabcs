@@ -34,6 +34,10 @@ switch($request){
     case "/admin/cartelera/editar":
         require_once __DIR__.'/../src/controllers/admin/movie/edit.php';
         break;
+    case "/admin/cartelera/eliminar":
+        require_once __DIR__.'/../src/controllers/admin/movie/delete.php';
+        break;
+
     case '/admin/eventos':
         require_once __DIR__.'/../src/views/public/admin/panel.php';
         break;

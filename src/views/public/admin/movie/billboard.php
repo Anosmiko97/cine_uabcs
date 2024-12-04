@@ -90,7 +90,12 @@
                     <!-- Modal para botón de eliminar -->
                     <div class="modal fade" id="delete-<?= $movie['id'] ?>" tabindex="-1" aria-labelledby="deleteLabel-<?= $movie['id'] ?>" aria-hidden="true">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <form action="/admin/cartelera/eliminar" method="post" class="modal-content">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($movie['id']) ?>">
+                                <input type="hidden" class="form-control" name="title" value="<?= htmlspecialchars($movie['title']) ?>">
+                                <input type="hidden" class="form-control" name="description" value="<?= htmlspecialchars($movie['description']) ?>">
+                                <input type="hidden" class="form-control" name="img_route" value="<?= htmlspecialchars($movie['img_route']) ?>">        
+                                <input type="hidden" class="form-control" name="movie_route" value="<?= htmlspecialchars($movie['movie_route']) ?>">
                                 <div class="modal-header">
                                     <h3>¿Esta seguro que quiere eliminar <?= htmlspecialchars($movie['title']) ?>?</h3>
                                 </div>
@@ -98,7 +103,7 @@
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-success">Sí</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 <?php endforeach; ?>
