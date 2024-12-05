@@ -29,92 +29,102 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
 
 </main>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const btnRegister = document.querySelector('#btnRegister');
-        let attendances = [];
+   document.addEventListener('DOMContentLoaded', () => {
+    const btnRegister = document.querySelector('#btnRegister');
+    const btnAddAttendance = document.querySelector('#btnAttendance');
+    const tbody = document.querySelector('.tbody');
+    const addAttendance = document.querySelector('#addAttendance');
+    let attendances = [];
 
-        function sendData(attendances) {
-            // Crear un formulario dinámico
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/admin/registrar_asistencias/post' ; // Cambia esta ruta por la que necesitas en tu backend
+    function sendData(attendances) {
+        // Crear un formulario dinámico
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/admin/registrar_asistencias/post'; // Cambia esta ruta por la que necesitas en tu backend
 
-            // Iterar sobre las asistencias y añadirlas como campos ocultos
-            attendances.forEach((attendance, index) => {
+        // Iterar sobre las asistencias y añadirlas como campos ocultos
+        attendances.forEach((attendance, index) => {
+            Object.keys(attendance).forEach(key => {
                 const input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = `attendances[${index}]`; // Nombres indexados para facilitar el manejo en el backend
-                input.value = attendance;
+                input.name = `attendances[${index}][${key}]`;
+                input.value = attendance[key];
                 form.appendChild(input);
             });
+        });
 
-            // Añadir el formulario al DOM y enviarlo
-            document.body.appendChild(form);
-            form.submit();
-        }
+        // Añadir el formulario al DOM y enviarlo
+        document.body.appendChild(form);
+        form.submit();
+    }
 
-        function drawAttendance(num_control) {
-                // Obtener la hora actual formateada
-                const dataTime = new Date();
-                const currentTime = dataTime.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: false
-                });
+    function drawAttendance(num_control) {
+        // Obtener la hora actual formateada
+        const dataTime = new Date();
+        const currentTime = dataTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
 
-                // Crear elementos para la fila
-                const tr = document.createElement('tr');
-                const tdNumControl = document.createElement('td');
-                const tdEntryTime = document.createElement('td');
-                const tdDepartureTime = document.createElement('td');
-                const tdCheckbox = document.createElement('td');
+        // Crear elementos para la fila
+        const tr = document.createElement('tr');
+        const tdNumControl = document.createElement('td');
+        const tdEntryTime = document.createElement('td');
+        const tdDepartureTime = document.createElement('td');
 
-                // Asignar contenido a las primeras celdas
-                tdNumControl.textContent = num_control;
-                tdEntryTime.textContent = currentTime;
+        // Asignar contenido a las primeras celdas
+        tdNumControl.textContent = num_control;
+        tdEntryTime.textContent = currentTime;
 
-                // Crear un input para la hora de salida
-                const departureInput = document.createElement('input');
-                departureInput.type = 'time';
-                departureInput.className = 'departure_time'; 
-                tdDepartureTime.appendChild(departureInput);
+        // Crear un input para la hora de salida
+        const departureInput = document.createElement('input');
+        departureInput.type = 'time';
+        departureInput.className = 'departure_time';
+        tdDepartureTime.appendChild(departureInput);
 
-                // Añadir las celdas a la fila
-                tr.appendChild(tdNumControl);
-                tr.appendChild(tdEntryTime);
-                tr.appendChild(tdDepartureTime);
-                tbody.appendChild(tr);
+        // Añadir las celdas a la fila
+        tr.appendChild(tdNumControl);
+        tr.appendChild(tdEntryTime);
+        tr.appendChild(tdDepartureTime);
+        tbody.appendChild(tr);
+
+        // Añadir el objeto a la lista de asistencias
+        attendances.push({
+            num_control: num_control,
+            entry_time: currentTime,
+            departure_time: null // Será llenado más tarde
+        });
+
+        // Sincronizar entrada de hora de salida con el objeto
+        departureInput.addEventListener('change', (e) => {
+            const index = Array.from(tbody.children).indexOf(tr);
+            if (index !== -1) {
+                attendances[index].departure_time = e.target.value;
             }
-            // Agregar asistencia a tabla
-            const btnAddAttendance = document.querySelector('#btnAttendance');
-            const tbody = document.querySelector('.tbody');
-            const addAttendance = document.querySelector('#addAttendance');
+        });
+    }
 
-            // Mover el evento de confirmación fuera
-            btnRegister.addEventListener('click', () => {
-                if (confirm('¿Está seguro de registrar las asistencias? Las asistencias que no tengan una hora de salida no se guardarán.')) {
-                    const departureInput = document.getElementsByClassName('departure_time');
-                    
-                    for (let input of departureInput) {
-                        if (input.value !== '') {
-                            attendances.push(input.value);
-                        }
-                    }
+    // Confirmación para registrar asistencias
+    btnRegister.addEventListener('click', () => {
+        if (confirm('¿Está seguro de registrar las asistencias? Las asistencias que no tengan una hora de salida no se guardarán.')) {
+            const validAttendances = attendances.filter(a => a.departure_time !== null);
+            sendData(validAttendances);
+        }
+    });
 
-                    console.log(attendances);
-                    sendData(attendances);
-                    attendances = []; // Reiniciar el array después de enviar
-                    console.log(attendances);
-                }
-            });
-
-// Mantener la funcionalidad de agregar asistencia
-addAttendance.addEventListener('click', () => {
-    const num_control = document.querySelector('#num_control');
-    drawAttendance(num_control.value);
+    // Agregar asistencia
+    addAttendance.addEventListener('click', () => {
+        const num_control = document.querySelector('#num_control');
+        if (num_control.value.trim() === '') {
+            alert('Por favor, ingrese un número de control válido.');
+            return;
+        }
+        drawAttendance(num_control.value);
+        num_control.value = ''; // Limpiar el campo de entrada después de agregar
+    });
 });
-            
-    });   
+
 </script>
 
 <!-- Modal para agregar asistencia -->

@@ -52,11 +52,8 @@ CREATE TABLE events_schedules (
 
 CREATE TABLE asistances (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_movie INT NOT NULL,
     num_control VARCHAR(255),
-    departure_time TIMESTAMP,
-    entry_time TIMESTAMP NULL,
-
-    CONSTRAINT fk_asistance_movie FOREIGN KEY (id_movie) REFERENCES movies(id) ON DELETE CASCADE
+    departure_time VARCHAR(19),
+    entry_time VARCHAR(19) NULL;
 );
 
