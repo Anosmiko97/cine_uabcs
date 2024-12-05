@@ -81,6 +81,7 @@ body {
 
 .poster {
     max-height: 70%;
+    border-radius: 5px;
 }
 
 .description {
