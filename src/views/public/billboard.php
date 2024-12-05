@@ -87,18 +87,17 @@ try {
             sidebar.classList.add('col-4');     // Añade la clase 'col-4'
         } else {
             sidebar.classList.remove('col-4');  // Elimina la clase 'col-4'
-            sidebar.classList.add('col-4');     // Añade la clase 'col-2'
+            sidebar.classList.add('col-2');     // Añade la clase 'col-2'
         }
 
         var sidebar = document.getElementById('billboard');
         
-        // Comprobar si el ancho de la pantalla es menor a 768px
         if (window.innerWidth < 768) {
-            sidebar.classList.remove('col-9');  // Elimina la clase 'col-2'
-            sidebar.classList.add('col-8');     // Añade la clase 'col-4'
+            sidebar.classList.remove('col-9');  
+            sidebar.classList.add('col-8');     
         } else {
-            sidebar.classList.remove('col-9');  // Elimina la clase 'col-4'
-            sidebar.classList.add('col-8');     // Añade la clase 'col-2'
+            sidebar.classList.remove('col-8');  
+            sidebar.classList.add('col-9');    
         }// AHHHHHHHHHHH NO CONSIGO QUE QUEDE COMO QUIERO CONCHESUMADREEEEEEEEEEEEEEE
     });
 
