@@ -9,7 +9,6 @@
     <title>Cine UABCS</title>
 </head>
 
-<body>
     <header class="bg-light py-2 shadow-sm">
         <div class="container d-flex align-items-center justify-content-between flex-wrap">
             <a href="/" class="d-flex align-items-center text-decoration-none">
@@ -39,6 +38,5 @@
     </header>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
 </html>
