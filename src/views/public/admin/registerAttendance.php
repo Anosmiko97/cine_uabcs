@@ -29,15 +29,48 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
 </main>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        //const btnAddAttendance = document.querySelector('#btnAttendance');
+        function drawAttendance(num_control) {
+            // Obtener la hora actual formateada
+            const dataTime = new Date();
+            const currentTime = dataTime.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            });
+
+            // Crear elementos para la fila
+            const tr = document.createElement('tr');
+            const tdNumControl = document.createElement('td');
+            const tdEntryTime = document.createElement('td');
+            const tdDepartureTime = document.createElement('td');
+
+            // Asignar contenido a los elementos
+            tdNumControl.textContent = num_control;
+            tdEntryTime.textContent = currentTime;
+            tdDepartureTime.textContent = ''; 
+            // Añadir las celdas a la fila
+            tr.appendChild(tdNumControl);
+            tr.appendChild(tdEntryTime);
+            tr.appendChild(tdDepartureTime);
+
+            // Obtener el tbody y añadir la fila
+            if (tbody) {
+                tbody.appendChild(tr);
+            } else {
+                console.error('No se encontró el elemento tbody con ID "attendance_table_body".');
+            }
+        }
+
+        const btnAddAttendance = document.querySelector('#btnAttendance');
         const tbody = document.querySelector('.tbody');
         const addAttendance = document.querySelector('#addAttendance');
 
         addAttendance.addEventListener('click', () => {
             const num_control = document.querySelector('#num_control');
             console.log(num_control.value);
+            drawAttendance(num_control.value);
         });
-    });
+    });   
 </script>
 
 <!-- Modal -->
