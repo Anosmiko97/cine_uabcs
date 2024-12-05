@@ -1,31 +1,3 @@
-<?php
-
-require_once "/xampp/htdocs/src/config/database.php";
-
-$conn = Db::getPDO();
-$error = null;
-
-// Obetner pelicula mas reciente
-$movies = [];
-try {
-    $stmt = $conn->query("SELECT * FROM movies");
-    $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-} catch (PDOException $e) {
-    $error = 'Algo salio mal al cargar las peliculas';
-}
-
-// Obtener evento mas reciente
-$event = null;
-try {
-    $stmt = $conn->query("SELECT * FROM events ORDER BY id DESC LIMIT 1");
-    $event = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-} catch (PDOException $e) {
-    $error = 'Algo salio mal al cargar el evento';
-}
-?>
-
 <?php include '../src/views/public/layouts/header.php'; ?>
 
 <head>
