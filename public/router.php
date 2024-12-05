@@ -71,6 +71,12 @@ switch($request){
     case '/admin/iniciar_sesion':
         require_once __DIR__.'/../src/views/public/admin/login.php';
         break;
+    
+    // Rutas para registro de asistencias
+    case '/admin/registrar_asistencias':
+        require_once __DIR__.'/../src/views/public/admin/registerAttendance.php';
+        break;
+
 
     default:
         http_response_code(404);

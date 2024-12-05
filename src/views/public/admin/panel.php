@@ -2,8 +2,6 @@
 require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
 require_once "/xampp/htdocs/src/helpers/session.php";
 
-Session::checkSession();
-
 $id = $_SESSION['admin']['id'];
 $name = $_SESSION['admin']['name'];
 $num_control = $_SESSION['admin']['num_control'];
@@ -39,6 +37,11 @@ $photo = $_SESSION['admin']['photo'];
                     <i class="fa-regular fa-user"></i>  
                 </a>
             <?php endif; ?>
+                <a class="container panel-option text-dark text-center bg-white p-4 rounded shadow"
+                href="/admin/registrar_asistencias">
+                    <h3>Registrar asistencias</h3>
+                    <i class="fa-solid fa-list"></i>
+                </a>
         </section>
     </main>
 
