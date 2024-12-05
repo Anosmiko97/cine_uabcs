@@ -47,8 +47,10 @@ try {
                             <div class="innerFrame">
 
                                 <div class="todayPoster">
-                                    <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" alt="poster" class="poster">
+                                    <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" alt="poster"
+                                        onerror="this.src='https://via.placeholder.com/260x410'" class="poster">
                                 </div>
+
 
                                 <div class="description">
                                     <div class="title">
@@ -76,12 +78,13 @@ try {
             </div>
 
             <div class="eventContainer">
-                <div class="eventPoster">
-                    <img src="<?= explode('htdocs', $events['img_route'])[1] ?>" alt="Evento ejemplo" >
-                </div>
+                <img src="<?= explode('htdocs', $events['img_route'])[1] ?>" alt="Evento ejemplo"
+                    onerror="this.src='https://via.placeholder.com/600x800'" class="eventPoster">
             </div>
-
         </div>
+
+
+    </div>
 </main>
 
 <?php include './src/views/public/layouts/footer.php'; ?>
