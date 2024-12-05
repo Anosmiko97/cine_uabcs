@@ -57,7 +57,7 @@
                     iure ipsa ducimus consequatur nesciunt modi voluptatem alias? Blanditiis officiis sequi vitae?
                     Praesentium enim nostrum itaque!
                 </div>
-                <img src="https://via.placeholder.com/600x800" class="rightEventPoster">
+                <img src="https://via.placeholder.com/600x300" class="rightEventPoster">
             </div>
 
             <div class="nextEventsContainer">
@@ -69,7 +69,7 @@
                     reiciendis exercitationem debitis perferendis beatae, amet dolore quaerat, enim odit eaque quisquam
                     adipisci fuga? Id.
                 </div>
-                <img src="https://via.placeholder.com/600x800" class="rightEventPoster">
+                <img src="https://via.placeholder.com/600x500" class="rightEventPoster">
             </div>
         </div>
 

@@ -31,7 +31,7 @@ body {
 .eventPoster {
     border-radius: 15px;
     width: 600px;
-    height: 800px;
+    height: 100%;
 }
 
 .left-frame {
@@ -47,7 +47,7 @@ body {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
     width: 600px;
-    height: 800px;
+    height: 100%;
 
 }
 
