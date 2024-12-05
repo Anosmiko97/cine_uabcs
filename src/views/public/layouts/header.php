@@ -13,7 +13,7 @@
     <header class="bg-light py-2 shadow-sm">
         <div class="container d-flex align-items-center justify-content-between flex-wrap">
             <a href="/" class="d-flex align-items-center text-decoration-none">
-                <img src="/public/assets/media/movies/default/uabcsLogo.png" alt="Logo" class="me-2" style="max-width: 120px; height: auto;">
+                <img src="/public/assets/media/movies/default/uabcsLogo.png" alt="Logo" class="me-2" style="max-width: 250px; height: auto;">
             </a>
 
             <!-- Menú de navegación responsivo -->
