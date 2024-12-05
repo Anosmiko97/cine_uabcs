@@ -1,5 +1,4 @@
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
     background-color: #DBDBDB;
 }
@@ -34,7 +33,6 @@ body {
     width: 600px;
     height: 800px;
 }
-
 
 .left-frame {
     background: linear-gradient(to bottom, #2D6FA4, #112A3E);
@@ -110,4 +108,25 @@ body {
     align-items: end;
     text-align: right;
     color: #2D6FA4;
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .right-frame,
+    .left-frame {
+        width: 90%;
+        margin: 1rem 0;
+    }
+
+    .frameGrid {
+        width: 100%;
+    }
+
+    .eventPoster{
+        width: 100%;
+    }
 }
