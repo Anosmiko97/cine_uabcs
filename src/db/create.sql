@@ -55,7 +55,7 @@ CREATE TABLE asistances (
     id_movie INT NOT NULL,
     num_control VARCHAR(255),
     departure_time TIMESTAMP,
-    entry_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    entry_time TIMESTAMP NULL,
 
     CONSTRAINT fk_asistance_movie FOREIGN KEY (id_movie) REFERENCES movies(id) ON DELETE CASCADE
 );

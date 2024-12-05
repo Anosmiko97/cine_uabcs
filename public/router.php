@@ -77,7 +77,7 @@ switch($request){
         require_once __DIR__.'/../src/views/public/admin/registerAttendance.php';
         break;
     case '/admin/registrar_asistencias/post':
-        require_once __DIR__.'/../src/views/public/admin/registerAttendance.php';
+        require_once __DIR__.'/../src/views/public/admin/postAttendance.php';
         break;
 
     default:
