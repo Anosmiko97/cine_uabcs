@@ -51,13 +51,17 @@
             <section class="container d-flex flex-wrap gap-4">
                 <?php foreach ($movies as $movie): ?> 
                     <div class="container panel-option text-center bg-white p-4 rounded shadow d-flex justify-content-center gap-4">
-                        <div class="container-img">
+                        <div class="container-img shadow border">
                             <img src="<?= explode('htdocs', $movie['img_route'])[1]?>" class="rounded" alt="">
                         </div>
                         <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
                             <h3><?= htmlspecialchars($movie['title']) ?></h3>
                             <p><?= htmlspecialchars($movie['description']) ?></p>
                             <div class="flex-column">
+                                <button class="container-fluid btn blue-btn mb-2"  
+                                    data-bs-toggle="modal" data-bs-target="#addSchedule-<?= $movie['id'] ?>">
+                                    Agregar horario
+                                </button>
                                 <button class="container-fluid btn blue-btn mb-2"  
                                 data-bs-toggle="modal" data-bs-target="#edit-<?= $movie['id'] ?>">
                                     Editar
@@ -94,11 +98,11 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Imagen de película</label>
-                                            <input type="file" class="form-control" name="img_route">
+                                            <input type="file" class="form-control" name="img_route" value="<?= htmlspecialchars($movie['img_route']) ?>">
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Archivo de película</label>
-                                            <input type="file" class="form-control" name="movie_route">
+                                            <input type="file" class="form-control" name="movie_route" value="<?= htmlspecialchars($movie['movie_route']) ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -125,6 +129,28 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-success">Sí</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modal para agregar horario -->
+                    <div class="modal fade" id="addSchedule-<?= $movie['id'] ?>" tabindex="-1" aria-labelledby="addScheduleLabel-<?= $movie['id'] ?>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form class="modal-content" action="/admin/cartelera/agregar_horario" method="post">
+                                <div class="modal-header">
+                                    <h4 class="text-center">Agregar horario a la película</h4>
+                                </div>
+                                <div class="modal-body d-flex justify-content-center gap-4">
+                                    <input type="hidden" name="movie_id" value="<?= $movie['id'] ?>">
+                                    <div class="mb-3">
+                                        <label class="form-label">Horario</label>
+                                        <input type="datetime-local" class="form-control" name="schedule_time" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-success">Agregar horario</button>
                                 </div>
                             </form>
                         </div>

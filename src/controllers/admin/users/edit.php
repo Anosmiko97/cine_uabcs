@@ -4,7 +4,7 @@ require_once "/xampp/htdocs/src/config/database.php";
 $conn = Db::getPDO();
 
 try {
-    $id = $_REQUEST['id'];
+    $id = $_POST['id'];  
 
     // Obtener los datos actuales del administrador para rellenar el formulario
     $stmt = $conn->prepare("SELECT * FROM admins WHERE id = :id");
@@ -15,7 +15,7 @@ try {
         throw new Exception("Administrador no encontrado.");
     }
 
-    // Procesar formulario si se recibe una solicitud POST
+    // Procesar formulario
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $name = trim($_POST['name']);
         $num_control = trim($_POST['num_control']);
@@ -55,46 +55,86 @@ try {
             $hashedPassword = $admin['password'];
         }
 
-        // Actualizar datos en la base de datos
-        $sql = "UPDATE admins SET 
-                    name = :name, 
-                    email = :email, 
-                    password = :password, 
-                    num_control = :num_control, 
-                    photo = :photo, 
-                    billboard_privileges = :billboard_privileges, 
-                    events_privileges = :events_privileges, 
-                    system_privileges = :system_privileges, 
-                    register_privileges = :register_privileges 
-                WHERE id = :id";
-        
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([
-            ':name' => $name,
-            ':email' => $email,
-            ':password' => $hashedPassword,
-            ':num_control' => $num_control,
-            ':photo' => $photoPath,
-            ':billboard_privileges' => $billboard_privileges,
-            ':events_privileges' => $events_privileges,
-            ':system_privileges' => $system_privileges,
-            ':register_privileges' => $register_privileges,
-            ':id' => $id
-        ]);
+        // Verificar si los datos han cambiado
+        $isDataChanged = false;
+        if ($name !== $admin['name']) {
+            $isDataChanged = true;
+        }
+        if ($num_control !== $admin['num_control']) {
+            $isDataChanged = true;
+        }
+        if ($email !== $admin['email']) {
+            $isDataChanged = true;
+        }
+        if ($password && password_verify($password, $admin['password'])) {
+            $isDataChanged = true;
+        }
+        if ($photo && $photo['name'] !== $admin['photo']) {
+            $isDataChanged = true;
+        }
+        if ($billboard_privileges !== $admin['billboard_privileges']) {
+            $isDataChanged = true;
+        }
+        if ($events_privileges !== $admin['events_privileges']) {
+            $isDataChanged = true;
+        }
+        if ($system_privileges !== $admin['system_privileges']) {
+            $isDataChanged = true;
+        }
+        if ($register_privileges !== $admin['register_privileges']) {
+            $isDataChanged = true;
+        }
 
-        $_SESSION['message'] = 'Administrador actualizado con éxito.';
-        header('Location: /admin/usuarios');
-        exit;
+        if ($isDataChanged) {
+            // Actualizar datos en la base de datos
+            $sql = "UPDATE admins SET 
+                        name = :name, 
+                        email = :email, 
+                        password = :password, 
+                        num_control = :num_control, 
+                        photo = :photo, 
+                        billboard_privileges = :billboard_privileges, 
+                        events_privileges = :events_privileges, 
+                        system_privileges = :system_privileges, 
+                        register_privileges = :register_privileges 
+                    WHERE id = :id";
+            
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([
+                ':name' => $name,
+                ':email' => $email,
+                ':password' => $hashedPassword,
+                ':num_control' => $num_control,
+                ':photo' => $photoPath,
+                ':billboard_privileges' => $billboard_privileges,
+                ':events_privileges' => $events_privileges,
+                ':system_privileges' => $system_privileges,
+                ':register_privileges' => $register_privileges,
+                ':id' => $id
+            ]);
+
+            session_start();
+            $_SESSION['message'] = 'Administrador actualizado con éxito.';
+            header('Location: /admin/usuarios');
+            exit;
+        } else {
+            session_start();
+            $_SESSION['message'] = 'No se realizaron cambios en los datos del administrador.';
+            header('Location: /admin/usuarios');
+            exit;
+        }
+
     }
 
 } catch (PDOException $e) {
+    session_start();
     $_SESSION['error'] = "Error al conectarse con la base de datos.";
     header('Location: /admin/usuarios');
     exit;
 } catch (Exception $e) {
+    session_start();
     $_SESSION['error'] = $e->getMessage();
     header('Location: /admin/usuarios');
     exit;
 }
 ?>
-

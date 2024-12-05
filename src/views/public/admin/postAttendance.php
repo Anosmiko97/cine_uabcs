@@ -20,10 +20,9 @@ try {
 
     // Para cada asistencia recibida, insertarla en la base de datos
     foreach ($attendances as $attendance) {
-        // Asegurarse de que los datos estén correctamente formateados
         $num_control = $attendance['num_control'];
         $entry_time = $attendance['entry_time'];
-        $departure_time = $attendance['departure_time'] ?? null;  // Si no hay hora de salida, se deja como NULL
+        $departure_time = $attendance['departure_time'] ?? null; 
 
         if (!$num_control || !$entry_time) {
             throw new Exception("El número de control y la hora de entrada son obligatorios.");
@@ -37,18 +36,17 @@ try {
         ]);
     }
 
-    // Respuesta exitosa
-    http_response_code(200);
-    echo json_encode(['message' => 'Asistencias registradas correctamente.']);
-
+    session_start();
+    $_SESSION['message'] =  'Asistencias registradas correctamente.';
+    header('Location: /admin/registrar_asistencias');
 } catch (PDOException $e) {
-    // Error en la base de datos
-    http_response_code(500);
-    echo json_encode(['error' => 'Error de base de datos: ' . $e->getMessage()]);
+    session_start();
+    $_SESSION['error'] =  'Error de base de datos: ' . $e->getMessage();
+    header('Location: /admin/registrar_asistencias');
 } catch (Exception $e) {
-    // Error en la lógica de negocio
-    http_response_code(400);
-    echo json_encode(['error' => $e->getMessage()]);
+    session_start();
+    $_SESSION['error'] =  'Error: ' . $e->getMessage();
+    header('Location: /admin/registrar_asistencias');
 }
 ?>
 

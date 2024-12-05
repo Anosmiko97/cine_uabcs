@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Validar tipos de archivo
-        $validImageTypes = ['image/jpeg', 'image/png'];
+        $validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         $validVideoTypes = ['video/mp4'];
         if (!in_array($image['type'], $validImageTypes)) {
             throw new Exception("Formato de imagen no permitido. Solo se permiten JPG y PNG.");
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Error al mover el archivo de la película.");
         }
 
-        // Insertar datos en la base de datos
+        // Insertar datos de la película
         $stmt = $conn->prepare("INSERT INTO movies (title, description, img_route, movie_route) VALUES (:title, :description, :image, :file)");
         $stmt->execute([
             ':title' => $title,
@@ -56,6 +56,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':image' => $imagePath,
             ':file' => $filePath,
         ]);
+        $movieId = $conn->lastInsertId();
+
+        // Ingresar horario de la película
+        $scheduleTime = $_REQUEST['schedule_time'] ?? ''; 
+        if (!empty($scheduleTime)) {
+            $stmt = $conn->prepare("INSERT INTO movies_schedules (id_movie, time) VALUES (:id_movie, :time)");
+            $stmt->execute([
+                ':id_movie' => $movieId, 
+                ':time' => $scheduleTime,
+            ]);
+        }
 
         session_start();
         $_SESSION['message'] = "Película agregada con éxito.";
@@ -64,6 +75,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $error = $e->getMessage();
+        session_start();
+        $_SESSION['error'] = $error;
+        header('Location: /admin/cartelera');
+        exit;
     }
 }
 ?>
@@ -73,24 +88,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <main class="p-2 text-center pt-5 d-flex justify-content-center">
         <form class="bg-white shadow rounded p-3 form" action="/admin/cartelera/agregar" 
-              enctype="multipart/form-data" method="post" style="max-width: 400px;">
+              enctype="multipart/form-data" method="post" style="max-width: 600px;">
             <div class="text-center">
                 <h4 class="text-center">Agregar película</h4>
             </div>
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
             <div class="modal-body d-flex justify-content-center gap-4">
                 <div>
                     <div class="mb-3">
                         <label class="form-label">Título</label>
-                        <input type="text" class="form-control" name="title" placeholder="Ingrese el título" value="<?= htmlspecialchars($_REQUEST['title'] ?? '') ?>">
+                        <input type="text" class="form-control" name="title" placeholder="Ingrese el título">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Descripción</label>
-                        <input type="text" class="form-control" name="description" placeholder="Ingrese una descripción" value="<?= htmlspecialchars($_REQUEST['description'] ?? '') ?>">
+                        <input type="text" class="form-control" name="description" placeholder="Ingrese una descripción">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Horario</label>
+                        <input type="datetime-local" class="form-control" name="schedule_time" placeholder="">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Imagen de película</label>
@@ -102,6 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
             <div class="text-center">
                 <button type="submit" class="btn blue-btn">AGREGAR</button>
             </div>

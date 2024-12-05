@@ -1,13 +1,28 @@
-<?php 
-require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
-?>
+<?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php"; ?>
 
-<main>
-<div class="container-fluid d-flex justify-content-end mt-4">
-<button id="btnRegister" type="button" class="btn blue-btn me-4">Registrar asistencias marcadas</button>
-    <button id="btnAttendance" type="button" class="btn blue-btn"
-        data-bs-toggle="modal" data-bs-target="#attendanceModal">Agregar asistencia +</button>
-</div>
+<main class="p-4">
+    <?php
+        if (isset($_SESSION['message'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_SESSION['message']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php unset($_SESSION['message']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= htmlspecialchars($_SESSION['error']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
+    <div class="container-fluid d-flex justify-content-end mt-4">
+        <button id="btnRegister" type="button" class="btn blue-btn me-4" data-bs-toggle="modal" data-bs-target="#confirmModal">Registrar asistencias marcadas</button>
+        <button id="btnAttendance" type="button" class="btn blue-btn"
+            data-bs-toggle="modal" data-bs-target="#attendanceModal">Agregar asistencia +</button>
+    </div>
     <div class="container shadow rounded bg-white mt-4">
         <table class="table">
             <thead>
@@ -18,29 +33,26 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
                 </tr>
             </thead>
             <tbody class="tbody">
-                <tr>
-                    <td>Larry the Bird</td>
-                    <td>@twitter</td>
-                    <td>@fat</td>
-                </tr>
             </tbody>
         </table>
     </div>
-
 </main>
+
 <script>
-   document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const btnRegister = document.querySelector('#btnRegister');
     const btnAddAttendance = document.querySelector('#btnAttendance');
     const tbody = document.querySelector('.tbody');
     const addAttendance = document.querySelector('#addAttendance');
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    const numControlInput = document.querySelector('#num_control');
+    const numControlError = document.querySelector('#numControlError');
     let attendances = [];
 
     function sendData(attendances) {
-        // Crear un formulario dinámico
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/admin/registrar_asistencias/post'; // Cambia esta ruta por la que necesitas en tu backend
+        form.action = '/admin/registrar_asistencias/post'; 
 
         // Iterar sobre las asistencias y añadirlas como campos ocultos
         attendances.forEach((attendance, index) => {
@@ -93,7 +105,7 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
         attendances.push({
             num_control: num_control,
             entry_time: currentTime,
-            departure_time: null // Será llenado más tarde
+            departure_time: null 
         });
 
         // Sincronizar entrada de hora de salida con el objeto
@@ -107,25 +119,59 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
 
     // Confirmación para registrar asistencias
     btnRegister.addEventListener('click', () => {
-        if (confirm('¿Está seguro de registrar las asistencias? Las asistencias que no tengan una hora de salida no se guardarán.')) {
-            const validAttendances = attendances.filter(a => a.departure_time !== null);
+        if (attendances.length === 0 || attendances.every(a => a.departure_time === null)) {
+            alert('No hay asistencias con hora de salida para registrar.');
+        } else {
+            confirmModal.show();
+        }
+    });
+
+    // Confirmar registro en el modal
+    document.querySelector('#confirmRegister').addEventListener('click', () => {
+        const validAttendances = attendances.filter(a => a.departure_time !== null);
+        if (validAttendances.length === 0) {
+            alert('No hay asistencias con hora de salida para registrar.');
+        } else {
             sendData(validAttendances);
         }
+        confirmModal.hide();
     });
 
     // Agregar asistencia
     addAttendance.addEventListener('click', () => {
-        const num_control = document.querySelector('#num_control');
-        if (num_control.value.trim() === '') {
-            alert('Por favor, ingrese un número de control válido.');
+        const num_control = numControlInput.value.trim();
+        if (num_control === '') {
+            numControlError.textContent = 'Por favor, ingrese un número de control válido.';
+            numControlError.style.color = 'red';
             return;
         }
-        drawAttendance(num_control.value);
-        num_control.value = ''; // Limpiar el campo de entrada después de agregar
+        
+        // Limpiar el mensaje de error cuando el número de control es válido
+        numControlError.textContent = '';
+        drawAttendance(num_control);
+        numControlInput.value = ''; 
     });
 });
-
 </script>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content p-2">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Registro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro de registrar las asistencias? Las asistencias que no tengan una hora de salida no se guardarán.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="confirmRegister" class="btn btn-success">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal para agregar asistencia -->
 <div class="modal fade" id="attendanceModal" tabindex="-1" aria-labelledby="attendanceModalLabel" aria-hidden="true">
@@ -140,6 +186,7 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
                     <div class="mb-3">
                         <label class="form-label">Número de Control</label>
                         <input id="num_control" type="text" class="form-control" name="num_control" required>
+                        <small id="numControlError" class="form-text text-danger"></small> <!-- Mensaje de error -->
                     </div>
                 </div>
             </div>
@@ -149,4 +196,5 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>    
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

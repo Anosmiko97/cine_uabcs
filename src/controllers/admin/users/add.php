@@ -79,68 +79,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <main class="p-2 text-center pt-5 d-flex justify-content-center">
         <form class="bg-white shadow rounded p-3 form" action="/admin/usuarios/agregar" 
-              enctype="multipart/form-data" method="post" style="max-width: 400px;">
+              enctype="multipart/form-data" method="post" style="max-width: 80%;">
             <div class="text-center">
-                <h4 class="text-center">Registrar Nuevo Administrador</h4>
+                <h4 class="text-center border-bottom pb-2 mb-2">Registrar Nuevo Administrador</h4>
             </div>
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <?= htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
-            <div class="modal-body d-flex justify-content-center gap-4">
-                <div>
-                    <!-- Nombre -->
-                    <div class="mb-3">
-                        <label class="form-label">Nombre</label>
-                        <input type="text" class="form-control" name="name" placeholder="Ingrese el nombre" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
+            <div class="modal-body  gap-4">
+                <div class="d-flex justify-content-center">
+                    <div class="Container">
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="name" placeholder="Ingrese el nombre" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
+                        </div>
+
+                        <!-- Número de Control -->
+                        <div class="mb-3">
+                            <label class="form-label">Número de Control</label>
+                            <input type="text" class="form-control" name="num_control" placeholder="Número de control" value="<?= htmlspecialchars($_POST['num_control'] ?? '') ?>" required>
+                        </div>
+
+                        <!-- Correo Electrónico -->
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" name="email" placeholder="Correo electrónico" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" name="password" placeholder="Ingrese la contraseña" required>
+                        </div>
                     </div>
 
-                    <!-- Número de Control -->
-                    <div class="mb-3">
-                        <label class="form-label">Número de Control</label>
-                        <input type="text" class="form-control" name="num_control" placeholder="Número de control" value="<?= htmlspecialchars($_POST['num_control'] ?? '') ?>" required>
-                    </div>
+                    <div class="container">
+                        <!-- Privilegios -->
+                        <div class="mb-3">
+                            <label class="form-label">Privilegios en la Cartelera</label>
+                            <input type="checkbox" class="form-check-input" name="billboard_privileges" <?= isset($_POST['billboard_privileges']) ? 'checked' : '' ?>>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Privilegios en Eventos</label>
+                            <input type="checkbox" class="form-check-input" name="events_privileges" <?= isset($_POST['events_privileges']) ? 'checked' : '' ?>>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Privilegios en el Sistema</label>
+                            <input type="checkbox" class="form-check-input" name="system_privileges" <?= isset($_POST['system_privileges']) ? 'checked' : '' ?>>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Privilegios para Registrar</label>
+                            <input type="checkbox" class="form-check-input" name="register_privileges" <?= isset($_POST['register_privileges']) ? 'checked' : '' ?>>
+                        </div>
 
-                    <!-- Correo Electrónico -->
-                    <div class="mb-3">
-                        <label class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" name="email" placeholder="Correo electrónico" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
-                    </div>
-
-                    <!-- Contraseña -->
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" name="password" placeholder="Ingrese la contraseña" required>
-                    </div>
-
-                    <!-- Privilegios -->
-                    <div class="mb-3">
-                        <label class="form-label">Privilegios en la Cartelera</label>
-                        <input type="checkbox" class="form-check-input" name="billboard_privileges" <?= isset($_POST['billboard_privileges']) ? 'checked' : '' ?>>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Privilegios en Eventos</label>
-                        <input type="checkbox" class="form-check-input" name="events_privileges" <?= isset($_POST['events_privileges']) ? 'checked' : '' ?>>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Privilegios en el Sistema</label>
-                        <input type="checkbox" class="form-check-input" name="system_privileges" <?= isset($_POST['system_privileges']) ? 'checked' : '' ?>>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Privilegios para Registrar</label>
-                        <input type="checkbox" class="form-check-input" name="register_privileges" <?= isset($_POST['register_privileges']) ? 'checked' : '' ?>>
-                    </div>
-
-                    <!-- Foto -->
-                    <div class="mb-3">
-                        <label class="form-label">Foto</label>
-                        <input type="file" class="form-control" name="photo">
-                        <small>Deje en blanco si no desea subir una foto</small>
+                        <!-- Foto -->
+                        <div class="mb-3">
+                            <label class="form-label">Foto</label>
+                            <input type="file" class="form-control" name="photo">
+                            <small>Deje en blanco si no desea subir una foto</small>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="text-center">
+            <div class="text-center mt-2 border-top pt-2">
                 <button type="submit" class="btn btn-success">Registrar Administrador</button>
             </div>
         </form>

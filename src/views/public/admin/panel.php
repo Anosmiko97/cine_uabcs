@@ -9,36 +9,55 @@ $email =  $_SESSION['admin']['email'];
 $photo = $_SESSION['admin']['photo'];
 ?>
  
-    <main class="p-4 mt-4">
+    <main class="">
+        <div class="p-4 mt-4">
+            <?php
+                if (isset($_SESSION['message'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= htmlspecialchars($_SESSION['message']); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php unset($_SESSION['message']); ?>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($_SESSION['error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+        </div>
+
         <section class="container d-flex flex-wrap gap-4">
 
             <?php if (Session::checkPrivilegeWithReturn('billboard')): ?>
-                <a href="/admin/cartelera" class="container text-dark panel-option text-center bg-white p-4 rounded shadow">
+                <a href="/admin/cartelera" class="container text-dark panel-option text-center bg-white p-4 rounded shadow list-unstyled" style="text-decoration: none;">
                     <h3>Administrar cartelera</h3>
                     <i class="fa-solid fa-film"></i>
                 </a>
             <?php endif; ?>
             <?php if (Session::checkPrivilegeWithReturn('events')): ?>
-                <a href="/admin/eventos" class="container panel-option text-dark text-center bg-white p-4 rounded shadow">
-                    <h3>Administrar eventos</h3>
+                <a href="/admin/eventos" class="container panel-option text-dark text-center bg-white p-4 rounded shadow" style="text-decoration: none;">
+                    <h3 class="no-underline">Administrar eventos</h3>
                     <i class="fa-regular fa-calendar-days"></i>
                 </a>
             <?php endif; ?>
             <?php if (Session::checkPrivilegeWithReturn('system')): ?>
-                <a href="/admin/usuarios" class="container panel-option text-dark text-center bg-white p-4 rounded shadow">
+                <a href="/admin/usuarios" class="container panel-option text-dark text-center bg-white p-4 rounded shadow" style="text-decoration: none;">
                     <h3>Administrar Usuarios</h3>
                     <i class="fa-solid fa-users"></i>
                 </a>
             <?php endif; ?>
             <?php if (Session::checkPrivilegeWithReturn('system')): ?>
                 <a class="container panel-option text-dark text-center bg-white p-4 rounded shadow"
-                data-bs-toggle="modal" data-bs-target="#<?= $id ?>">
+                data-bs-toggle="modal" data-bs-target="#<?= $id ?>"  style="text-decoration: none;">
                     <h3>Configurar mi perfil</h3>
                     <i class="fa-regular fa-user"></i>  
                 </a>
             <?php endif; ?>
                 <a class="container panel-option text-dark text-center bg-white p-4 rounded shadow"
-                href="/admin/registrar_asistencias">
+                href="/admin/registrar_asistencias" style="text-decoration: none;">
                     <h3>Registrar asistencias</h3>
                     <i class="fa-solid fa-list"></i>
                 </a>
@@ -47,17 +66,17 @@ $photo = $_SESSION['admin']['photo'];
 
     <!-- Modal para botón de editar -->
     <div class="modal fade" id="<?= $id?>" tabindex="-1" aria-labelledby="<?= $id ?>" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" style="max-width: 50%;">
                         <form class="modal-content" action="/admin/configurar_perfil" 
                             enctype="multipart/form-data" method="post">
                             <div class="modal-header">
                                 <h4 class="text-center">Ingrese la nueva información en los campos</h4>
                             </div>
                             <div class="modal-body d-flex justify-content-center gap-4">
-                                <div class="container-img">
+                                <div class="container-img shadow border me-5">
                                     <img src="<?= $photo ?>" class="rounded" alt="Foto del Administrador">
                                 </div>
-                                <div>
+                                <div class="">
                                     <input type="hidden" class="form-control" name="id" value="<?= htmlspecialchars($id) ?>" required>
 
                                     <!-- Nombre -->

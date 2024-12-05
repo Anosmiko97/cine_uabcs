@@ -6,37 +6,35 @@
     require_once "/xampp/htdocs/src/config/database.php";
     $conn = Db::getPDO();
     $error =  null;
-    $movies = [];
     
     try {
         $stmt = $conn->query("SELECT * FROM admins");
         $admins = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
     } catch (PDOException $e) {
-        $error = 'Algo salio mal al cargar las peliculas';
+        $error = 'Algo salio mal al cargar los usuarios';
     }    
 ?>
 
 <?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php" ?>
 
     <main class="p-4">
-    <?php
-        if (isset($_SESSION['message'])): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= htmlspecialchars($_SESSION['message']); ?>
+        <?php
+            if (isset($_SESSION['message'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($_SESSION['message']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_SESSION['error']); ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        <?php unset($_SESSION['message']); ?>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= htmlspecialchars($_SESSION['error']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
-
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
         <div class="container-fluid d-flex justify-content-end mb-4">
             <a class="btn blue-btn fw-bold" href="/admin/usuarios/agregar">Agregar administrador +</a>
@@ -49,88 +47,98 @@
         <?php else: ?>
             <section class="container d-flex flex-wrap gap-4">
                 <?php foreach ($admins as $admin): ?> 
-                    <div class="container panel-option text-center bg-white p-4 rounded shadow d-flex justify-content-center gap-4">
-                        <div class="container-img">
-                            <img src="<?= explode('htdocs', $admin['photo'])[1]?>" class="rounded" alt="">
-                        </div>
-                        <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
-                            <h3><?= htmlspecialchars($admin['name']) ?></h3>
-                            <p><?= htmlspecialchars($admin['num_control']) ?></p>
-                            <div class="flex-column">
-                                <button class="container-fluid btn blue-btn mb-2"  
-                                data-bs-toggle="modal" data-bs-target="#edit-<?= $admin['id'] ?>">
-                                    Editar
-                                </button>
-                                <button class="container-fluid btn btn-danger mb-2"  
-                                data-bs-toggle="modal" data-bs-target="#delete-<?= $admin['id'] ?>">
-                                    Eliminar
-                                </button>
+                    <?php if ($_SESSION['admin']['id'] != $admin['id']): ?>
+                        <div class="container panel-option text-center bg-white p-4 rounded shadow d-flex justify-content-center gap-4">
+                            <div class="container-img shadow border">
+                                <img src="<?= explode('htdocs', $admin['photo'])[1]?>" class="rounded" alt="">
+                            </div>
+                            <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
+                                <h3><?= htmlspecialchars($admin['name']) ?></h3>
+                                <p><?= htmlspecialchars($admin['num_control']) ?></p>
+                                <div class="flex-column">
+                                    <button class="container-fluid btn blue-btn mb-2"  
+                                    data-bs-toggle="modal" data-bs-target="#edit-<?= $admin['id'] ?>">
+                                        Editar
+                                    </button>
+                                    <button class="container-fluid btn btn-danger mb-2"  
+                                    data-bs-toggle="modal" data-bs-target="#delete-<?= $admin['id'] ?>">
+                                        Eliminar
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
 
                     <!-- Modal para botón de editar -->
                     <div class="modal fade" id="edit-<?= $admin['id'] ?>" tabindex="-1" aria-labelledby="editLabel-<?= $movie['id'] ?>" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog" style="max-width: 80%;">
                         <form class="modal-content" action="/admin/usuarios/editar" 
                             enctype="multipart/form-data" method="post">
                             <div class="modal-header">
                                 <h4 class="text-center">Ingrese la nueva información en los campos</h4>
+                                <div class="">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
                             </div>
                             <div class="modal-body d-flex justify-content-center gap-4">
                                 <div class="container-img">
                                     <img src="<?= explode('htdocs', $admin['photo'])[1] ?>" class="rounded" alt="Foto del Administrador">
                                 </div>
-                                <div>
+                                <div class="d-flex">
                                     <input type="hidden" name="id" value="<?= htmlspecialchars($admin['id']) ?>">
 
-                                    <!-- Nombre -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($admin['name']) ?>" required>
+                                    <div class="container">
+                                        <!-- Nombre -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Nombre</label>
+                                            <input type="text" class="form-control" name="name" value="<?= htmlspecialchars($admin['name']) ?>" required>
+                                        </div>
+
+                                        <!-- Número de Control -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Número de Control</label>
+                                            <input type="text" class="form-control" name="num_control" value="<?= htmlspecialchars($admin['num_control']) ?>" required>
+                                        </div>
+
+                                        <!-- Correo Electrónico -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Correo Electrónico</label>
+                                            <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($admin['email']) ?>" required>
+                                        </div>
+
+                                        <!-- Contraseña -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Contraseña</label>
+                                            <input type="password" class="form-control" name="password" placeholder="Ingrese una nueva contraseña o deje en blanco">
+                                        </div>
                                     </div>
 
-                                    <!-- Número de Control -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Número de Control</label>
-                                        <input type="text" class="form-control" name="num_control" value="<?= htmlspecialchars($admin['num_control']) ?>" required>
-                                    </div>
+                                    <div class="container">
+                                        <!-- Privilegios -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Privilegios en la Cartelera</label>
+                                            <input type="checkbox" class="form-check-input" name="billboard_privileges" <?= $admin['billboard_privileges'] ? 'checked' : '' ?>>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Privilegios en Eventos</label>
+                                            <input type="checkbox" class="form-check-input" name="events_privileges" <?= $admin['events_privileges'] ? 'checked' : '' ?>>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Privilegios en el Sistema</label>
+                                            <input type="checkbox" class="form-check-input" name="system_privileges" <?= $admin['system_privileges'] ? 'checked' : '' ?>>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Privilegios para Registrar</label>
+                                            <input type="checkbox" class="form-check-input" name="register_privileges" <?= $admin['register_privileges'] ? 'checked' : '' ?>>
+                                        </div>
 
-                                    <!-- Correo Electrónico -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Correo Electrónico</label>
-                                        <input type="email" class="form-control" name="email" value="<?= htmlspecialchars($admin['email']) ?>" required>
+                                        <!-- Foto -->
+                                        <div class="mb-3">
+                                            <label class="form-label">Foto</label>
+                                            <input type="file" class="form-control" name="photo">
+                                        </div>
                                     </div>
-
-                                    <!-- Contraseña -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" name="password" placeholder="Ingrese una nueva contraseña o deje en blanco">
-                                    </div>
-
-                                    <!-- Privilegios -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Privilegios en la Cartelera</label>
-                                        <input type="checkbox" class="form-check-input" name="billboard_privileges" <?= $admin['billboard_privileges'] ? 'checked' : '' ?>>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Privilegios en Eventos</label>
-                                        <input type="checkbox" class="form-check-input" name="events_privileges" <?= $admin['events_privileges'] ? 'checked' : '' ?>>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Privilegios en el Sistema</label>
-                                        <input type="checkbox" class="form-check-input" name="system_privileges" <?= $admin['system_privileges'] ? 'checked' : '' ?>>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Privilegios para Registrar</label>
-                                        <input type="checkbox" class="form-check-input" name="register_privileges" <?= $admin['register_privileges'] ? 'checked' : '' ?>>
-                                    </div>
-
-                                    <!-- Foto -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Foto</label>
-                                        <input type="file" class="form-control" name="photo">
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="modal-footer">
