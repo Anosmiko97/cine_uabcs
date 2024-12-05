@@ -4,6 +4,7 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
 
 <main>
 <div class="container-fluid d-flex justify-content-end mt-4">
+<button id="btnRegister" type="button" class="btn blue-btn me-4">Registrar asistencias marcadas</button>
     <button id="btnAttendance" type="button" class="btn blue-btn"
         data-bs-toggle="modal" data-bs-target="#attendanceModal">Agregar asistencia +</button>
 </div>
@@ -29,7 +30,7 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
 </main>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        function drawAttendance(num_control) {
+    function drawAttendance(num_control) {
             // Obtener la hora actual formateada
             const dataTime = new Date();
             const currentTime = dataTime.toLocaleTimeString('en-US', {
@@ -43,15 +44,41 @@ require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php";
             const tdNumControl = document.createElement('td');
             const tdEntryTime = document.createElement('td');
             const tdDepartureTime = document.createElement('td');
+            const tdCheckbox = document.createElement('td');
 
-            // Asignar contenido a los elementos
+            // Asignar contenido a las primeras celdas
             tdNumControl.textContent = num_control;
             tdEntryTime.textContent = currentTime;
-            tdDepartureTime.textContent = ''; 
+
+            // Crear un input para la hora de salida
+            const departureInput = document.createElement('input');
+            departureInput.type = 'time';
+            departureInput.name = `departure_time_${num_control}`; 
+            tdDepartureTime.appendChild(departureInput);
+
+            // Crear el checkbox
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.name = `attendance_${num_control}`;
+            checkbox.value = num_control;
+
+            // Evento para detectar cambios en el estado del checkbox
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    console.log(`Checkbox marcado para el número de control: ${num_control}`);
+                } else {
+                    console.log(`Checkbox desmarcado para el número de control: ${num_control}`);
+                }
+            });
+
+            // Añadir el checkbox a la celda
+            tdCheckbox.appendChild(checkbox);
+
             // Añadir las celdas a la fila
             tr.appendChild(tdNumControl);
             tr.appendChild(tdEntryTime);
             tr.appendChild(tdDepartureTime);
+            tr.appendChild(tdCheckbox);
 
             // Obtener el tbody y añadir la fila
             if (tbody) {

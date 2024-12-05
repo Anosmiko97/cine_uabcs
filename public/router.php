@@ -76,7 +76,9 @@ switch($request){
     case '/admin/registrar_asistencias':
         require_once __DIR__.'/../src/views/public/admin/registerAttendance.php';
         break;
-
+    case '/admin/registrar_asistencias/post':
+        require_once __DIR__.'/../src/views/public/admin/registerAttendance.php';
+        break;
 
     default:
         http_response_code(404);
