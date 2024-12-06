@@ -122,7 +122,7 @@ try {
             </div>
 
             <div class="eventContainer">
-                <img src="<?= explode('htdocs', $events['img_route'])[1] ?>" alt="Evento ejemplo"
+                <img src="<? explode('htdocs', $movie['img_route'])[1] ?>" alt="Evento ejemplo"
                     onerror="this.src='https://via.placeholder.com/600x800'" class="eventPoster">
             </div>
         </div>
