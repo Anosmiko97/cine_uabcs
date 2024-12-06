@@ -8,8 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $error = null;
 
     try {
-        $title = trim($_REQUEST['title'] ?? '');
-        $description = trim($_REQUEST['description'] ?? '');
+        $title = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
         $image = $_FILES['img_route'] ?? null;
         $file = $_FILES['movie_route'] ?? null;
 
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $movieId = $conn->lastInsertId();
 
         // Ingresar horario de la película
-        $scheduleTime = $_REQUEST['schedule_time'] ?? ''; 
+        $scheduleTime = $_POST['schedule_time'] ?? ''; 
         if (!empty($scheduleTime)) {
             $stmt = $conn->prepare("INSERT INTO movies_schedules (id_movie, time) VALUES (:id_movie, :time)");
             $stmt->execute([
@@ -68,62 +68,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
-        session_start();
-        $_SESSION['message'] = "Película agregada con éxito.";
+        // Redirigir si la operación es exitosa
         header('Location: /admin/cartelera');
         exit;
 
     } catch (Exception $e) {
         $error = $e->getMessage();
-        session_start();
-        $_SESSION['error'] = $error;
-        header('Location: /admin/cartelera');
-        exit;
     }
 }
 ?>
 
-<?php if ($_SERVER['REQUEST_METHOD'] === 'GET' || isset($error)): ?>
-    <?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php"; ?>
+<?php require_once "/xampp/htdocs/src/views/public/admin/layouts/header.php"; ?>
 
-    <main class="p-2 text-center pt-5 d-flex justify-content-center">
-        <form class="bg-white shadow rounded p-3 form" action="/admin/cartelera/agregar" 
-              enctype="multipart/form-data" method="post" style="max-width: 600px;">
-            <div class="text-center">
-                <h4 class="text-center">Agregar película</h4>
-            </div>
-            <div class="modal-body d-flex justify-content-center gap-4">
-                <div>
-                    <div class="mb-3">
-                        <label class="form-label">Título</label>
-                        <input type="text" class="form-control" name="title" placeholder="Ingrese el título">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Descripción</label>
-                        <input type="text" class="form-control" name="description" placeholder="Ingrese una descripción">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Horario</label>
-                        <input type="datetime-local" class="form-control" name="schedule_time" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Imagen de película</label>
-                        <input type="file" class="form-control" name="img_route">
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">Archivo de película</label>
-                        <input type="file" class="form-control" name="movie_route">
-                    </div>
+<main class="p-2 text-center pt-5 d-flex justify-content-center">
+    <form class="bg-white shadow rounded p-3 form" action="/admin/cartelera/agregar" 
+          enctype="multipart/form-data" method="post" style="max-width: 600px;">
+        <div class="text-center">
+            <h4 class="text-center">Agregar película</h4>
+        </div>
+        <div class="modal-body d-flex justify-content-center gap-4">
+            <div>
+                <div class="mb-3">
+                    <label class="form-label">Título</label>
+                    <input type="text" class="form-control" name="title" placeholder="Ingrese el título">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-control" name="description" rows="5" placeholder="Ingrese una descripción"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Horario</label>
+                    <input type="datetime-local" class="form-control" name="schedule_time" placeholder="">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Imagen de película</label>
+                    <input type="file" class="form-control" name="img_route">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Archivo de película</label>
+                    <input type="file" class="form-control" name="movie_route">
                 </div>
             </div>
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
-            <div class="text-center">
-                <button type="submit" class="btn blue-btn">AGREGAR</button>
+        </div>
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($error); ?>
             </div>
-        </form>
-    </main>
-<?php endif; ?>
+        <?php endif; ?>
+        <div class="text-center">
+            <button type="submit" class="btn blue-btn">AGREGAR</button>
+        </div>
+    </form>
+</main>

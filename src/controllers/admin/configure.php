@@ -99,7 +99,7 @@ try {
         // Si no se realizaron cambios, enviar mensaje y redirigir
         if (!$changesMade) {
             session_start();
-            $_SESSION['message'] = 'No se realizaron cambios en los datos del perfil.';
+            $_SESSION['error'] = 'No se realizaron cambios en los datos del perfil.';
             header('Location: /admin/panel');
             exit;
         }

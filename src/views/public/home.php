@@ -19,7 +19,7 @@ try {
 $event = null;
 try {
     $stmt = $conn->query("SELECT * FROM events ORDER BY id DESC LIMIT 1");
-    $event = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $event = $stmt->fetch(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     $error = 'Algo salio mal al cargar el evento';
@@ -122,7 +122,7 @@ try {
             </div>
 
             <div class="eventContainer">
-                <img src="<? explode('htdocs', $movie['img_route'])[1] ?>" alt="Evento ejemplo"
+                <img src="<?= explode('htdocs', $event['img_route'])[1] ?>" alt="Evento ejemplo"
                     onerror="this.src='https://via.placeholder.com/600x800'" class="eventPoster">
             </div>
         </div>

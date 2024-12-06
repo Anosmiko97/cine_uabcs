@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function sendData(attendances) {
         const form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/admin/registrar_asistencias/post'; 
+        form.action = '/admin/registrar_asistencias/post';
 
         // Iterar sobre las asistencias y añadirlas como campos ocultos
         attendances.forEach((attendance, index) => {
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attendances.push({
             num_control: num_control,
             entry_time: currentTime,
-            departure_time: null 
+            departure_time: null
         });
 
         // Sincronizar entrada de hora de salida con el objeto
@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Confirmación para registrar asistencias
     btnRegister.addEventListener('click', () => {
-        if (attendances.length === 0 || attendances.every(a => a.departure_time === null)) {
+        const validAttendances = attendances.filter(a => a.departure_time !== null);
+        if (validAttendances.length === 0) {
             alert('No hay asistencias con hora de salida para registrar.');
         } else {
             confirmModal.show();
@@ -131,9 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const validAttendances = attendances.filter(a => a.departure_time !== null);
         if (validAttendances.length === 0) {
             alert('No hay asistencias con hora de salida para registrar.');
-        } else {
-            sendData(validAttendances);
+            return;
         }
+        sendData(validAttendances);
         confirmModal.hide();
     });
 
@@ -152,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         numControlInput.value = ''; 
     });
 });
+
 </script>
 
 <!-- Modal de Confirmación -->

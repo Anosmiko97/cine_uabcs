@@ -74,16 +74,17 @@
 
                     <!-- Modal para botón de editar -->
                     <div class="modal fade" id="edit-<?= $event['id'] ?>" tabindex="-1" aria-labelledby="editLabel-<?= $event['id'] ?>" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content" action="/admin/eventos/editar" 
-                            enctype="multipart/form-data" method="post">
+                        <div class="modal-dialog modal-lg">
+                            <form class="modal-content" action="/admin/eventos/editar" enctype="multipart/form-data" method="post">
                                 <div class="modal-header">
                                     <h4 class="text-center">Ingrese la nueva información en los campos</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                                 </div>
                                 <div class="modal-body d-flex justify-content-center gap-4">
-                                    <di class="container-img">
+                                    <div class="container-img">
                                         <img src="<?= explode('htdocs', $event['img_route'])[1]?>" class="rounded" alt="">
-                                </div>
+                                    </div>
                                     <div class="p-4">
                                         <input type="hidden" name="id" value="<?= htmlspecialchars($event['id']) ?>">
                                         <div class="mb-3">
@@ -92,11 +93,11 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Descripción</label>
-                                            <input type="text" class="form-control" name="description" value="<?= htmlspecialchars($event['description']) ?>">
+                                            <textarea class="form-control" name="description" rows="4"><?= htmlspecialchars($event['description']) ?></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Informacion</label>
-                                            <input type="text" class="form-control" name="info" value="<?= htmlspecialchars($event['info']) ?>">
+                                            <label class="form-label">Información</label>
+                                            <textarea class="form-control" name="info" rows="4"><?= htmlspecialchars($event['info']) ?></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Lugar</label>
@@ -106,7 +107,8 @@
                                             <label class="form-label">Imagen del evento</label>
                                             <input type="file" class="form-control" name="img_route" value="<?= htmlspecialchars($event['img_route']) ?>">
                                         </div>
-                                                        </div>
+                                    </div>
+                                </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-success">Guardar cambios</button>
@@ -114,6 +116,7 @@
                             </form>
                         </div>
                     </div>
+
 
                     <!-- Modal para botón de eliminar -->
                     <div class="modal fade" id="delete-<?= $event['id'] ?>" tabindex="-1" aria-labelledby="deleteLabel-<?= $event['id'] ?>" aria-hidden="true">

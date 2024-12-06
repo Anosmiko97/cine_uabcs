@@ -9,7 +9,7 @@ $email =  $_SESSION['admin']['email'];
 $photo = $_SESSION['admin']['photo'];
 ?>
  
-    <main class="">
+    <main class="mb-4">
         <div class="p-4 mt-4">
             <?php
                 if (isset($_SESSION['message'])): ?>
@@ -74,7 +74,7 @@ $photo = $_SESSION['admin']['photo'];
                             </div>
                             <div class="modal-body d-flex justify-content-center gap-4">
                                 <div class="container-img shadow border me-5">
-                                    <img src="<?= $photo ?>" class="rounded" alt="Foto del Administrador">
+                                    <img src="<?= explode('htdocs', $photo)[1]?>" class="rounded" alt="Foto del Administrador">
                                 </div>
                                 <div class="">
                                     <input type="hidden" class="form-control" name="id" value="<?= htmlspecialchars($id) ?>" required>
@@ -118,4 +118,5 @@ $photo = $_SESSION['admin']['photo'];
 
                         </div>
                     </div>
+                    
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>    

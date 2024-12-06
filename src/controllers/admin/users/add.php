@@ -64,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':register_privileges' => $register_privileges,
         ]);
 
+        session_start();
         $_SESSION['message'] = "Administrador registrado con éxito.";
         header('Location: /admin/usuarios');
         exit;
@@ -83,36 +84,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="text-center">
                 <h4 class="text-center border-bottom pb-2 mb-2">Registrar Nuevo Administrador</h4>
             </div>
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= htmlspecialchars($error); ?>
-                </div>
-            <?php endif; ?>
-            <div class="modal-body  gap-4">
+            <div class="modal-body gap-4">
                 <div class="d-flex justify-content-center">
                     <div class="Container">
                         <!-- Nombre -->
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
-                            <input type="text" class="form-control" name="name" placeholder="Ingrese el nombre" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
+                            <input type="text" class="form-control" name="name" placeholder="Ingrese el nombre" value="<?= htmlspecialchars($_POST['name'] ?? '') ?>">
                         </div>
 
                         <!-- Número de Control -->
                         <div class="mb-3">
                             <label class="form-label">Número de Control</label>
-                            <input type="text" class="form-control" name="num_control" placeholder="Número de control" value="<?= htmlspecialchars($_POST['num_control'] ?? '') ?>" required>
+                            <input type="text" class="form-control" name="num_control" placeholder="Número de control" value="<?= htmlspecialchars($_POST['num_control'] ?? '') ?>">
                         </div>
 
                         <!-- Correo Electrónico -->
                         <div class="mb-3">
                             <label class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" name="email" placeholder="Correo electrónico" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>" required>
+                            <input type="email" class="form-control" name="email" placeholder="Correo electrónico" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
                         </div>
 
                         <!-- Contraseña -->
                         <div class="mb-3">
                             <label class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" name="password" placeholder="Ingrese la contraseña" required>
+                            <input type="password" class="form-control" name="password" placeholder="Ingrese la contraseña">
                         </div>
                     </div>
 
@@ -144,6 +140,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
+            <?php if (!empty($error)): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($error); ?>
+                </div>
+            <?php endif; ?>
             <div class="text-center mt-2 border-top pt-2">
                 <button type="submit" class="btn btn-success">Registrar Administrador</button>
             </div>

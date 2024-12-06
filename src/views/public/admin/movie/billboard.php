@@ -56,7 +56,6 @@
                         </div>
                         <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
                             <h3><?= htmlspecialchars($movie['title']) ?></h3>
-                            <p><?= htmlspecialchars($movie['description']) ?></p>
                             <div class="flex-column">
                                 <button class="container-fluid btn blue-btn mb-2"  
                                     data-bs-toggle="modal" data-bs-target="#addSchedule-<?= $movie['id'] ?>">
@@ -76,15 +75,16 @@
 
                     <!-- Modal para botón de editar -->
                     <div class="modal fade" id="edit-<?= $movie['id'] ?>" tabindex="-1" aria-labelledby="editLabel-<?= $movie['id'] ?>" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                             <form class="modal-content" action="/admin/cartelera/editar" 
                             enctype="multipart/form-data" method="post">
                                 <div class="modal-header">
-                                    <h4 class="text-center">Ingrese la nueva información en los campos</h4>
+                                    <h4 class="text-center mb-2">Ingrese la nueva información en los campos</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body d-flex justify-content-center gap-4">
-                                    <div class="container-img">
-                                        <img src="<?= explode('htdocs', $movie['img_route'])[1]?>" class="rounded" alt="">
+                                    <div class="container-img mt-4">
+                                            <img src="<?= explode('htdocs', $movie['img_route'])[1]?>" class="rounded" alt="">
                                     </div>
                                     <div>
                                         <input type="hidden" name="id" value="<?= htmlspecialchars($movie['id']) ?>">
@@ -94,7 +94,7 @@
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Descripción</label>
-                                            <input type="text" class="form-control" name="description" value="<?= htmlspecialchars($movie['description']) ?>">
+                                            <textarea type="text" class="form-control" name="description" value="<?= htmlspecialchars($movie['description']) ?>"><?= htmlspecialchars($movie['description']) ?></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Imagen de película</label>
@@ -146,6 +146,10 @@
                                     <div class="mb-3">
                                         <label class="form-label">Horario</label>
                                         <input type="datetime-local" class="form-control" name="schedule_time" required>
+                                        <!-- Mostrar el mensaje de error si no se ha llenado el campo -->
+                                        <?php if (isset($error) && empty($_POST['schedule_time'])): ?>
+                                            <div class="text-danger mt-2">El campo de horario es obligatorio.</div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -155,6 +159,7 @@
                             </form>
                         </div>
                     </div>
+
                 <?php endforeach; ?>
             </section>
 

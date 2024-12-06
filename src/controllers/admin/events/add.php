@@ -58,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
 
+        // Si todo es correcto, redirigir
         session_start();
         $_SESSION['message'] = "Evento agregado con éxito.";
         header('Location: /admin/eventos');
@@ -65,10 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (Exception $e) {
         $error = $e->getMessage();
-        session_start();
-        $_SESSION['error'] = $error;
-        header('Location: /admin/eventos');
-        exit;
     }
 }
 ?>
@@ -90,15 +87,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Descripción</label>
-                        <input type="text" class="form-control" name="description" placeholder="Ingrese una descripción">
+                        <textarea class="form-control" name="description" rows="3" placeholder="Ingrese una descripción"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Informacion</label>
-                        <input type="text" class="form-control" name="info" placeholder="">
+                        <label class="form-label">Información</label>
+                        <textarea class="form-control" name="info" rows="3" placeholder="Ingrese información adicional"></textarea>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Lugar</label>
-                        <input type="text" class="form-control" name="place" placeholder="">
+                        <input type="text" class="form-control" name="place" placeholder="Ingrese el lugar">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Horario</label>
@@ -110,11 +107,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
+
+            <!-- Mostrar mensajes de error -->
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <?= htmlspecialchars($error); ?>
                 </div>
             <?php endif; ?>
+
             <div class="text-center">
                 <button type="submit" class="btn blue-btn">AGREGAR</button>
             </div>

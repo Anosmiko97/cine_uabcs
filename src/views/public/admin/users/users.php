@@ -54,7 +54,6 @@
                             </div>
                             <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
                                 <h3><?= htmlspecialchars($admin['name']) ?></h3>
-                                <p><?= htmlspecialchars($admin['num_control']) ?></p>
                                 <div class="flex-column">
                                     <button class="container-fluid btn blue-btn mb-2"  
                                     data-bs-toggle="modal" data-bs-target="#edit-<?= $admin['id'] ?>">
