@@ -1,9 +1,3 @@
-DROP DATABASE IF EXISTS cine_uabcs;
-
-CREATE DATABASE cine_uabcs;
-
-USE cine_uabcs;
-
 CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -56,4 +50,3 @@ CREATE TABLE asistances (
     departure_time VARCHAR(19),
     entry_time VARCHAR(19) NULL
 );
-
