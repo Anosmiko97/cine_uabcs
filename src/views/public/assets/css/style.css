@@ -126,11 +126,9 @@ body {
 }
 
 .poster {
-    max-height: 70%;
-    border-radius: 5px;
-    width: 100%;
+    width: 8rem;
+    height: 10rem;
 }
-
 
 .sinopsis {
     display: flex;

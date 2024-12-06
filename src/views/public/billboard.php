@@ -18,7 +18,7 @@ try {
     <?php include '../src/views/public/layouts/header.php'; ?>
 
     <main class="p-4">
-        <div class="container-fluid text-center d-flex flex-wrap">
+        <div class="container-fluid text-center d-flex flex-wrap gap-4">
 
             <?php foreach ($movies as $movie): ?>
                 <div class="container text-center bg-white p-4 rounded shadow d-flex justify-content-center gap-4 panel-option" style="width: 400px;">
