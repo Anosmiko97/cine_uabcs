@@ -5,7 +5,7 @@ require_once "/xampp/htdocs/src/config/database.php";
 $conn = Db::getPDO();
 $error = null;
 
-// Obetner pelicula mas reciente
+// Obetner pelicula 
 $movies = [];
 try {
     $stmt = $conn->query("SELECT * FROM movies");
