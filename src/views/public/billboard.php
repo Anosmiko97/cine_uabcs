@@ -4,107 +4,125 @@ require_once "/xampp/htdocs/src/config/database.php";
 $conn = Db::getPDO();
 $error = null;
 
-// Obetner pelicula mas reciente
+// Obtener películas
 $movies = [];
 try {
     $stmt = $conn->query("SELECT * FROM movies");
     $movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 } catch (PDOException $e) {
-    $error = 'Algo salio mal al cargar las peliculas';
+    $error = 'Algo salió mal al cargar las películas';
 }
-?>
+?> 
 
 <head>
     <link rel="stylesheet" href="/public/assets/css/billboard.css">
+    <style>
+        .movie-img {
+            max-width: 200px; 
+            width: 100%; 
+            height: auto; 
+        }
+        .modal-img {
+            max-width: 150px; 
+            width: 100%;
+            height: auto;
+        }
+
+        :root {
+            --blue: #2D6FA4;
+        }
+
+        .billboardFrame {
+            background: linear-gradient(to bottom, #2D6FA4, #112A3E);
+        }
+
+        .panel-option {
+            max-width: 400px;
+            transition: .5s ease-in-out scale;
+        }
+
+        .panel-option i {
+            font-size: 6rem;
+        }
+
+        .panel-option:hover {
+            scale: 1.03;
+        }
+
+        .container-img img {
+            width: 10rem;
+            height: auto;
+            
+        }
+
+        .blue-btn {
+            background-color: var(--blue);
+            color: white;
+        }
+
+        .blue-btn:hover {
+            background-color: #004781;
+            color: rgb(164, 164, 164);
+        }
+    </style>
 </head>
 
 <?php include '../src/views/public/layouts/header.php'; ?>
 
-<body>
+<main class="p-4">
+    <div class="container-fluid text-center d-flex flex-wrap">
 
-    <div class="container-fluid">
-
-        <div class="row">
-
-            <!-- Sidebar -->
-            <div class="col-2 pd-0 sideMenu" id="sidebar">
-                <div class="sideMenuContent">
-                    <ul class="list-group">
-                        <li class="list-group-item">12 de noviembre</li>
-                        <li class="list-group-item">13 de noviembre</li>
-                        <li class="list-group-item">14 de noviembre</li>
-                        <li class="list-group-item">15 de noviembre</li>
-                        <li class="list-group-item">16 de noviembre</li>
-                        <li class="list-group-item">17 de noviembre</li>
-                        <li class="list-group-item">18 de noviembre</li>
-                        <li class="list-group-item">19 de noviembre</li>
-                        <li class="list-group-item">20 de noviembre</li>
-                        <li class="list-group-item active">21 de noviembre</li>
-                        <li class="list-group-item">22 de noviembre</li>
-                        <li class="list-group-item">23 de noviembre</li>
-                        <li class="list-group-item">24 de noviembre</li>
-                        <li class="list-group-item">25 de noviembre</li>
-                    </ul>
+        <?php foreach ($movies as $movie): ?>
+            <div class="container text-center bg-white p-4 rounded shadow d-flex justify-content-center gap-4 panel-option" style="width: 400px;">
+                <div class="container-img shadow border">
+                    <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" class="movie-img rounded" alt="">
+                </div>
+                <div class="text-center d-flex flex-column justify-content-between pt-4 pb-4">
+                    <h3><?= htmlspecialchars($movie['title']) ?></h3>
+                    <p><?= htmlspecialchars($movie['description']) ?></p>
+                    <div class="">
+                        <button class="container-fluid btn btn-danger mb-2"  
+                                data-bs-toggle="modal" data-bs-target="#info-<?= $movie['id'] ?>">
+                            Más info
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-9 d-flex" id="billboard">
-                <div class="billboardFrame flex-grow-1">
-                    <?php foreach ($movies as $movie): ?>
-                        <div class="filmFrame" id="frame0">
-                            <div class="innerFrame">
-                                <div class="todayPoster">
-                                    <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" alt="poster"
-                                        onerror="this.src='https://via.placeholder.com/260x410'" class="poster">
-                                </div>
-                                <div class="description">
-                                    <div class="title">
-                                        <b><?= htmlspecialchars($movie['title']) ?></b>
-                                    </div>
-                                    <div class="sinopsis">
-                                        <small><?= htmlspecialchars($movie['description']) ?></small>
-                                    </div>
-                                    <div class="hour">
-                                        <small>10:30 pm</small>
-                                    </div>
-                                </div>
+            <!-- Modal para mostrar información -->
+            <div class="modal fade" id="info-<?= $movie['id'] ?>" tabindex="-1" aria-labelledby="infoLabel-<?= $movie['id'] ?>" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="infoLabel-<?= $movie['id'] ?>">
+                                <?= htmlspecialchars($movie['title']) ?>
+                            </h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex justify-content-center gap-4">
+                            <div class="text-center">
+                                <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" class="modal-img rounded" alt="">
+                            </div>
+                            <div>
+                                <p><strong>Descripción:</strong> <?= htmlspecialchars($movie['description']) ?></p>
+                                <p><strong>Horarios:</strong></p>
+                                <ul>
+                                    <?php
+                                    $schedules = ["10:00 AM", "1:00 PM", "4:00 PM", "7:00 PM"]; 
+                                    foreach ($schedules as $schedule): ?>
+                                        <li><?= htmlspecialchars($schedule) ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php endforeach; ?>
     </div>
-
-    <script>
-    window.addEventListener('resize', function() {
-        var sidebar = document.getElementById('sidebar');
-        
-        // Comprobar si el ancho de la pantalla es menor a 768px
-        if (window.innerWidth < 768) {
-            sidebar.classList.remove('col-2');  // Elimina la clase 'col-2'
-            sidebar.classList.add('col-4');     // Añade la clase 'col-4'
-        } else {
-            sidebar.classList.remove('col-4');  // Elimina la clase 'col-4'
-            sidebar.classList.add('col-2');     // Añade la clase 'col-2'
-        }
-
-        var sidebar = document.getElementById('billboard');
-        
-        if (window.innerWidth < 768) {
-            sidebar.classList.remove('col-9');  
-            sidebar.classList.add('col-8');     
-        } else {
-            sidebar.classList.remove('col-8');  
-            sidebar.classList.add('col-9');    
-        }// AHHHHHHHHHHH NO CONSIGO QUE QUEDE COMO QUIERO CONCHESUMADREEEEEEEEEEEEEEE
-    });
-
-    window.dispatchEvent(new Event('resize'));
-</script>
-
-</body>
-
+</main>
 
 <?php include '../src/views/public/layouts/footer.php'; ?>
