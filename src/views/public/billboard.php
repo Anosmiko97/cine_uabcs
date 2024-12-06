@@ -14,59 +14,6 @@ try {
 }
 ?> 
 
-<head>
-    <link rel="stylesheet" href="/public/assets/css/billboard.css">
-    <style>
-        .movie-img {
-            max-width: 200px; 
-            width: 100%; 
-            height: auto; 
-        }
-        .modal-img {
-            max-width: 150px; 
-            width: 100%;
-            height: auto;
-        }
-
-        :root {
-            --blue: #2D6FA4;
-        }
-
-        .billboardFrame {
-            background: linear-gradient(to bottom, #2D6FA4, #112A3E);
-        }
-
-        .panel-option {
-            max-width: 400px;
-            transition: .5s ease-in-out scale;
-        }
-
-        .panel-option i {
-            font-size: 6rem;
-        }
-
-        .panel-option:hover {
-            scale: 1.03;
-        }
-
-        .container-img img {
-            width: 10rem;
-            height: auto;
-            
-        }
-
-        .blue-btn {
-            background-color: var(--blue);
-            color: white;
-        }
-
-        .blue-btn:hover {
-            background-color: #004781;
-            color: rgb(164, 164, 164);
-        }
-    </style>
-</head>
-
 <?php include '../src/views/public/layouts/header.php'; ?>
 
 <main class="p-4">
@@ -100,7 +47,7 @@ try {
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body d-flex justify-content-center gap-4">
-                            <div class="text-center">
+                            <div class="container-img text-center">
                                 <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" class="modal-img rounded" alt="">
                             </div>
                             <div>
