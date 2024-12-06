@@ -40,19 +40,33 @@ try {
                     <h1><b>Hoy</b></h1>
                 </div>
 
-                <div class="frameGrid">
+                <div class="frameGrid overflow-auto">
                     <?php foreach ($movies as $movie): ?>
 
-                        <div class="filmFrame" id="frame0">
-                            <div class="innerFrame">
-
+                        <div class="container bg-white rounded shadow d-flex text-dark">
                                 <div class="todayPoster">
                                     <img src="<?= explode('htdocs', $movie['img_route'])[1] ?>" alt="poster"
                                         onerror="this.src='https://via.placeholder.com/260x410'" class="poster">
                                 </div>
 
+                                <?php
+                                    $schedules = []; 
+                                    $id = $movie['id'];
+                                    try {
+                                        $stmt = $conn->prepare("SELECT time FROM movies_schedules WHERE id_movie = :id");
+                                        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                        $stmt->execute();
+                                        $schedules = $stmt->fetchAll(PDO::FETCH_COLUMN); 
+                                        
+                                        $formattedSchedules = array_map(function($time) {
+                                            return explode(" ", $time); 
+                                        }, $schedules);
+                                    } catch (PDOException $e) {
+                                        $error = 'Algo salió mal al cargar los horarios';
+                                    }
+                                ?>
 
-                                <div class="description">
+                                <div class="container p-2">
                                     <div class="title">
                                         <b><?= htmlspecialchars($movie['title']) ?></b>
                                     </div>
@@ -61,11 +75,16 @@ try {
                                         <small><?= htmlspecialchars($movie['description']) ?></small>
                                     </div>
 
-                                    <div class="hour">
-                                        <small>10:30 pm</small>
-                                    </div>
+                                        <ul>
+                                            <?php if (!empty($formattedSchedules)): ?>
+                                                <?php foreach ($formattedSchedules as $schedule): ?>
+                                                    <li><?= htmlspecialchars($schedule[1]) ?></li>
+                                                <?php endforeach; ?>
+                                            <?php else: ?>
+                                                <li>No hay horarios disponibles</li>
+                                            <?php endif; ?>
+                                        </ul>
                                 </div>
-                            </div>
                         </div>
                     <?php endforeach; ?>
                     

@@ -64,6 +64,7 @@ body {
     margin: 3%;
 }
 
+/* Esto se queda */
 .right-frame {
     padding-bottom: 2%;
     padding-left: 2%;
@@ -86,13 +87,14 @@ body {
     padding-right: 2%;
 }
 
+/* Esto se queda */
 .frameGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
     width: 600px;
     height: 800px;
-
+    gap: 1rem;
 }
 
 .filmFrame {
@@ -129,16 +131,6 @@ body {
     width: 100%;
 }
 
-.description {
-    display: flex;
-    flex-flow: column;
-}
-
-.title {
-    display: flex;
-    align-items: top;
-    text-align: left;
-}
 
 .sinopsis {
     display: flex;
@@ -146,14 +138,6 @@ body {
     align-items: center;
     max-width: 120px;
     text-align: left;
-}
-
-.hour {
-    display: flex;
-    justify-content: right;
-    align-items: end;
-    text-align: right;
-    color: #2D6FA4;
 }
 
 @media (max-width: 768px) {
@@ -180,6 +164,7 @@ body {
     .frameGrid {
         grid-template-columns: repeat(1, 1fr);
         grid-template-rows: repeat(auto, 1fr);
+        gap: 10px;
     }
 
 

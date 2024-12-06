@@ -55,17 +55,17 @@ try {
                                     <p><strong>Descripción:</strong> <?= htmlspecialchars($movie['description']) ?></p>
                                     <p><strong>Horarios:</strong></p>
                                     <ul>
-                                    <?php
-                                        $schedules = []; 
-                                        $id = $movie['id'];
-                                        try {
-                                            $stmt = $conn->prepare("SELECT time FROM movies_schedules WHERE id_movie = :id");
-                                            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-                                            $stmt->execute();
-                                            $schedules = $stmt->fetchAll(PDO::FETCH_COLUMN); 
-                                        } catch (PDOException $e) {
-                                            $error = 'Algo salió mal al cargar los horarios';
-                                        }
+                                        <?php
+                                            $schedules = []; 
+                                            $id = $movie['id'];
+                                            try {
+                                                $stmt = $conn->prepare("SELECT time FROM movies_schedules WHERE id_movie = :id");
+                                                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                                $stmt->execute();
+                                                $schedules = $stmt->fetchAll(PDO::FETCH_COLUMN); 
+                                            } catch (PDOException $e) {
+                                                $error = 'Algo salió mal al cargar los horarios';
+                                            }
                                         ?>
 
                                         <ul>
