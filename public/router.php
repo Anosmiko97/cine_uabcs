@@ -44,9 +44,21 @@ switch($request){
         require_once __DIR__.'/../src/controllers/admin/movie/addShedule.php';
         break;
     
-
+    // Rutas para eventos
     case '/admin/eventos':
-        require_once __DIR__.'/../src/views/public/admin/panel.php';
+        require_once __DIR__.'/../src/views/public/admin/events/events.php';
+        break;
+    case "/admin/eventos/editar":
+        require_once __DIR__.'/../src/controllers/admin/events/edit.php';
+        break;
+    case "/admin/eventos/eliminar":
+        require_once __DIR__.'/../src/controllers/admin/events/delete.php';
+        break;
+    case "/admin/eventos/agregar":
+        require_once __DIR__.'/../src/controllers/admin/events/add.php';
+        break;
+    case "/admin/eventos/agregar_horario":
+        require_once __DIR__.'/../src/controllers/admin/events/addShedule.php';
         break;
 
     // Rutas de usuarios
